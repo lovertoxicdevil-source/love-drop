@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — Love Drop</title>
+  <link rel="icon" type="image/svg+xml" href="/love-drop/favicon.svg">
+  <link rel="stylesheet" href="/love-drop/css/base.css">
+  <link rel="stylesheet" href="/love-drop/css/dash.css">
+</head>
+<body class="grain">
+  <header class="topbar">
+    <a class="brand" href="/love-drop/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path d="M12 21s-7.5-4.6-9.8-9.1C.6 8.6 2.3 5 5.7 5c2 0 3.3 1.1 4.3 2.4C11 6.1 12.3 5 14.3 5c3.4 0 5.1 3.6 3.5 6.9C15.5 16.4 12 21 12 21z" fill="#e4573d" opacity="0.9"/>
+      </svg>
+      Love Drop
+    </a>
+    <nav>
+      <a class="btn btn-quiet" href="/love-drop/create">Naya proposal</a>
+      <a class="btn btn-quiet" href="/love-drop/" id="admin-link" style="display:none">Admin</a>
+      <button class="btn btn-ghost btn-sm" id="logout">Logout</button>
+    </nav>
+  </header>
+
+  <main class="wrap dash-wrap">
+    <h1>Tumhare proposals</h1>
+    <p class="dash-sub" id="dash-email">...</p>
+
+    <div class="dash-tools">
+      <button class="btn btn-ghost btn-sm" id="backup-btn">Backup download</button>
+      <label class="restore-label btn btn-ghost btn-sm">
+        Backup wapas lao
+        <input type="file" id="restore-file" accept="application/json" hidden>
+      </label>
+    </div>
+
+    <div id="prop-list" class="prop-list"></div>
+    <p class="empty hidden" id="empty">Abhi tak koi proposal nahi bana. <a href="/love-drop/create">Pehla banao</a>, dar lag raha hai toh demo dekho pehle.</p>
+    <p class="dash-loading" id="dash-loading">Laate hain...</p>
+  </main>
+
+  <!-- edit modal -->
+  <div class="modal-back" id="edit-back">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="edit-title">
+      <h2 id="edit-title">Proposal edit karo</h2>
+      <label class="field"><span class="lbl">Note</span><textarea id="edit-note" maxlength="2000"></textarea></label>
+      <label class="field"><span class="lbl">Tune</span>
+        <select id="edit-tune">
+          <option value="soft">Soft (dheema)</option>
+          <option value="playful">Playful (mast)</option>
+          <option value="waltz">Waltz (saaf)</option>
+        </select>
+      </label>
+      <label class="field"><span class="lbl">Theme</span>
+        <select id="edit-theme">
+          <option value="terracotta">Terracotta</option>
+          <option value="rose">Rose</option>
+          <option value="midnight">Midnight</option>
+          <option value="forest">Forest</option>
+          <option value="gold">Gold</option>
+          <option value="mono">Mono</option>
+        </select>
+      </label>
+      <div class="wiz-grid2x">
+        <label class="field"><span class="lbl">Expiry</span>
+          <select id="edit-expires">
+            <option value="">Kabhi nahi</option>
+            <option value="24h">24 ghante</option>
+            <option value="3d">3 din</option>
+            <option value="7d">7 din</option>
+          </select>
+        </label>
+        <label class="field"><span class="lbl">View limit</span>
+          <select id="edit-vlimit">
+            <option value="">Koi limit nahi</option>
+            <option value="3">3 views</option>
+            <option value="5">5 views</option>
+            <option value="10">10 views</option>
+          </select>
+        </label>
+      </div>
+      <div class="wiz-btnsx">
+        <button class="btn btn-ghost" id="edit-cancel">Cancel</button>
+        <button class="btn btn-primary" id="edit-save">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/love-drop/js/ui.js"></script>
+  <script src="/love-drop/js/dash.js"></script>
+</body>
+</html>

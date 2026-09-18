@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tumhare liye kuch hai</title>
+  <meta name="description" content="Kisi ne tumhe ek chhota sa page bheja hai. Kholo toh pata chalega.">
+  <meta property="og:title" content="Tumhare liye kuch hai">
+  <meta property="og:description" content="Kisi ne tumhe ek chhota sa page bheja hai. Kholo toh pata chalega.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="/love-drop/favicon.svg">
+  <link rel="stylesheet" href="/love-drop/css/base.css">
+  <link rel="stylesheet" href="/love-drop/css/proposal.css">
+</head>
+<body class="grain proposal-body">
+  <canvas id="bg" aria-hidden="true"></canvas>
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <div class="progress" id="prog" style="width:0%"></div>
+
+  <!-- quick controls: music + background, hamesha visible -->
+  <div class="quick-controls">
+    <button id="qc-music" class="qc-btn" aria-label="music on/off" title="Gaana on/off">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+    </button>
+    <button id="qc-bg" class="qc-btn" aria-label="background on/off" title="Background on/off">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3z"/></svg>
+    </button>
+  </div>
+
+  <main id="stage">
+    <!-- loading -->
+    <section class="screen" id="scr-load">
+      <div class="heart-spin" aria-hidden="true">
+        <svg width="54" height="54" viewBox="0 0 24 24" fill="#e4573d"><path d="M12 21s-7.5-4.6-9.8-9.1C.6 8.6 2.3 5 5.7 5c2 0 3.3 1.1 4.3 2.4C11 6.1 12.3 5 14.3 5c3.4 0 5.1 3.6 3.5 6.9C15.5 16.4 12 21 12 21z"/></svg>
+      </div>
+      <p class="load-txt">Khol rahe hain...</p>
+    </section>
+
+    <!-- not found / expired -->
+    <section class="screen hidden" id="scr-gone">
+      <div class="gone-card card-glass" id="gone-card">
+        <h1 id="gone-title">Link khatam ho gaya</h1>
+        <p id="gone-text">Yeh link ab kaam nahi karta. Bhejne wale se naya link maang lo.</p>
+        <a class="btn btn-ghost" href="/love-drop/">Love Drop dekho</a>
+      </div>
+    </section>
+
+    <!-- splash -->
+    <section class="screen hidden" id="scr-splash">
+      <p class="splash-kicker" id="greeting"></p>
+      <h1 class="splash-title">Kisi ne tumhe<br>kuch bheja hai</h1>
+      <p class="splash-sub">Thoda time lagega. Par jo bheja hai, uske liye time toh niklega.</p>
+      <button class="btn btn-primary btn-big" id="start-btn">Kholo</button>
+      <p class="splash-note">( headphones lagao toh mazaa double )</p>
+    </section>
+
+    <!-- question -->
+    <section class="screen hidden" id="scr-q">
+      <p class="q-count" id="q-count"></p>
+      <h1 class="q-title" id="q-title"></h1>
+      <div class="q-options" id="q-options"></div>
+    </section>
+
+    <!-- game -->
+    <section class="screen hidden" id="scr-game">
+      <p class="q-count">Chhota sa game</p>
+      <h1 class="q-title">Dil pakdo</h1>
+      <p class="splash-sub" id="game-status">Girte hue dil pakdo. 10 chahiye.</p>
+      <div class="game-wrap">
+        <canvas id="game-canvas"></canvas>
+      </div>
+      <p class="game-miss" id="game-miss"></p>
+    </section>
+
+    <!-- final -->
+    <section class="screen hidden" id="scr-final">
+      <p class="q-count">Aakhri sawaal</p>
+      <h1 class="final-title" id="final-q"></h1>
+      <div class="final-area" id="final-area">
+        <button class="btn btn-primary btn-big" id="yes-btn">YES</button>
+        <button class="btn btn-danger btn-big" id="no-btn">NO</button>
+      </div>
+      <p class="dodge-note" id="dodge-note"></p>
+    </section>
+
+    <!-- celebration -->
+    <section class="screen hidden" id="scr-yes">
+      <div class="yes-kicker">Jawab mil gaya</div>
+      <h1 class="reveal-name" id="reveal-name"></h1>
+      <p class="yes-sub" id="yes-sub"></p>
+
+      <div class="photo-frame hidden" id="photo-frame">
+        <img id="photo" alt="sender ki photo">
+      </div>
+
+      <div class="reasons hidden" id="reasons">
+        <p class="reasons-title">Wajah kya? Ye dekho.</p>
+        <div class="reason-stack" id="reason-stack"></div>
+      </div>
+
+      <div class="note-card card-glass hidden" id="note-card">
+        <p class="note-text" id="note-text"></p>
+      </div>
+
+      <div class="reply-area hidden" id="reply-area">
+        <p class="reply-title">Kuch kehna hai? Yahan likh do.</p>
+        <textarea id="reply-text" maxlength="1000" placeholder="Likho... chhota sa hi sahi"></textarea>
+        <button class="btn btn-primary" id="reply-send">Bhej do</button>
+        <p class="reply-done hidden" id="reply-done">Pahunch gaya. Smiley ka intezaar mat karo, call aayega.</p>
+      </div>
+
+      <p class="credit">
+        Made with
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#e4573d" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.8-9.1C.6 8.6 2.3 5 5.7 5c2 0 3.3 1.1 4.3 2.4C11 6.1 12.3 5 14.3 5c3.4 0 5.1 3.6 3.5 6.9C15.5 16.4 12 21 12 21z"/></svg>
+        by <a href="https://instagram.com/your_x_calling" target="_blank" rel="noopener">Kartik Sharma</a>, missing his Chiku Pie
+      </p>
+    </section>
+  </main>
+
+  <script src="/love-drop/js/ui.js"></script>
+  <script src="/love-drop/js/gl.js"></script>
+  <script src="/love-drop/js/audio.js"></script>
+  <script src="/love-drop/js/fx.js"></script>
+  <script src="/love-drop/js/proposal.js"></script>
+</body>
+</html>

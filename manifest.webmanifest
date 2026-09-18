@@ -1,0 +1,12 @@
+{
+  "name": "Love Drop",
+  "short_name": "Love Drop",
+  "description": "Dil ki baat, link ke saath.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#141010",
+  "theme_color": "#141010",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

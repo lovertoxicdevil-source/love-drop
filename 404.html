@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tumhare liye kuch hai</title>
+  <meta name="description" content="Kisi ne tumhe ek chhota sa page bheja hai. Kholo toh pata chalega.">
+  <meta property="og:title" content="Tumhare liye kuch hai">
+  <meta property="og:description" content="Kisi ne tumhe ek chhota sa page bheja hai. Kholo toh pata chalega.">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="/love-drop/favicon.svg">
+  <link rel="stylesheet" href="/love-drop/css/base.css">
+  <script>
+    // GitHub Pages pe /p/<code> seedha nahi milta. Ye page pakad ke sahi jagah le jaata hai.
+    (function () {
+      var m = location.pathname.match(/^\/love-drop\/p\/([a-z0-9-]+)$/i) || location.pathname.match(/^\/p\/([a-z0-9-]+)$/i);
+      if (m) {
+        try { sessionStorage.setItem('ld_code', m[1]); } catch (e) { /* private mode */ }
+        location.replace('/love-drop/proposal.html');
+        return;
+      }
+    })();
+  </script>
+</head>
+<body class="grain">
+  <header class="topbar">
+    <a class="brand" href="/love-drop/">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.8-9.1C.6 8.6 2.3 5 5.7 5c2 0 3.3 1.1 4.3 2.4C11 6.1 12.3 5 14.3 5c3.4 0 5.1 3.6 3.5 6.9C15.5 16.4 12 21 12 21z" fill="#e4573d" opacity="0.9"/></svg>
+      Love Drop
+    </a>
+    <nav><a class="btn btn-quiet" href="/love-drop/">Ghar jao</a></nav>
+  </header>
+  <main style="min-height:70vh;display:flex;align-items:center;justify-content:center;padding:20px;">
+    <div style="text-align:center;">
+      <h1 style="font-size:64px;margin-bottom:8px;">404</h1>
+      <p style="color:var(--cream-dim);margin-bottom:24px;">Ye rasta kahin aur jaata hai. Wapas ghar chalein?</p>
+      <a class="btn btn-primary" href="/love-drop/">Love Drop pe jao</a>
+    </div>
+  </main>
+</body>
+</html>

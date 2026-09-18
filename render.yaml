@@ -1,8 +1,0 @@
-services:
-  - type: web
-    name: love-drop
-    runtime: node
-    plan: free
-    buildCommand: ""
-    startCommand: node server.js
-    healthCheckPath: /api/boot

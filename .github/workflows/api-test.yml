@@ -1,0 +1,45 @@
+name: API smoke test
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run API tests
+        run: |
+          set -e
+          API="https://ktzyncoafautqanxxeou.supabase.co/functions/v1/api"
+          echo "== me (anon) =="
+          curl -sf "$API/auth/me"; echo
+          echo "== signup =="
+          EMAIL="gh-test-$(date +%s)@lovedrop.invalid"
+          TOKEN=$(curl -sf -X POST "$API/auth/signup" -H 'Content-Type: application/json' -d "{\"email\":\"$EMAIL\",\"password\":\"password123\"}" | python3 -c "import sys,json;print(json.load(sys.stdin)['token'])")
+          echo "token: ${TOKEN:0:12}..."
+          echo "== create proposal =="
+          CODE=$(curl -sf -X POST "$API/proposals" -H "Authorization: Bearer $TOKEN" -H 'Content-Type: application/json' -d '{"partner_name":"GH Test","questions":[{"q":"Q?","options":["a","b"]}],"reasons":["r1"],"note":"test note","final_question":"F?","theme":"rose"}' | python3 -c "import sys,json;print(json.load(sys.stdin)['code'])")
+          echo "code: $CODE"
+          echo "== public view =="
+          curl -sf "$API/p/$CODE" | head -c 200; echo
+          echo "== secret pre-yes (expect 403) =="
+          S1=$(curl -s -o /dev/null -w "%{http_code}" "$API/p/$CODE/secret"); echo "$S1"
+          [ "$S1" = "403" ] || { echo "FAIL: expected 403"; exit 1; }
+          echo "== dodge =="
+          curl -sf -X POST "$API/p/$CODE/dodge" -H 'Content-Type: application/json' -d '{"count":5}'; echo
+          echo "== answer YES =="
+          curl -sf -X POST "$API/p/$CODE/answer" -H 'Content-Type: application/json' -d '{"answer":"yes"}'; echo
+          echo "== secret post-yes =="
+          curl -sf "$API/p/$CODE/secret"; echo
+          echo "== reply =="
+          curl -sf -X POST "$API/p/$CODE/reply" -H 'Content-Type: application/json' -d '{"text":"gh test reply"}'; echo
+          echo "== dashboard list =="
+          curl -sf "$API/proposals" -H "Authorization: Bearer $TOKEN" | head -c 300; echo
+          echo "== admin non-owner (expect 403) =="
+          S2=$(curl -s -o /dev/null -w "%{http_code}" "$API/admin/stats" -H "Authorization: Bearer $TOKEN"); echo "$S2"
+          [ "$S2" = "403" ] || { echo "FAIL: expected 403"; exit 1; }
+          echo "== bad login (expect 401) =="
+          S3=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$API/auth/login" -H 'Content-Type: application/json' -d '{"email":"nope@x.y","password":"wrongpass"}'); echo "$S3"
+          [ "$S3" = "401" ] || { echo "FAIL: expected 401"; exit 1; }
+          echo "== unauth list (expect 401) =="
+          S4=$(curl -s -o /dev/null -w "%{http_code}" "$API/proposals"); echo "$S4"
+          [ "$S4" = "401" ] || { echo "FAIL: expected 401"; exit 1; }
+          echo "ALL_TESTS_PASSED"
