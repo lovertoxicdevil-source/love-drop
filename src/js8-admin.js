@@ -478,7 +478,7 @@ const GS={
     this._loading=false;this.mount();
   },
   simulate(){this.grant({email:ADMIN_EMAIL,name:"Owner",picture:null,sim:true})},
-  b64d(p){p=p.replace(/-/g,"+").replace(/_/g,"/");while(p.length%4)p+="=";
+  b64d(p){p=p.replace(/-/g,"+").replace(/_/g,"/");while(p.length%4)p+"=";
     return decodeURIComponent(atob(p).split("").map(ch=>"%"+("00"+ch.charCodeAt(0).toString(16)).slice(-2)).join(""))},
   async onCred(resp){
     // v11: admin login screen par nahi hain? toh ye credential NORMAL USER sign-in hai — route karo
