@@ -1,0 +1,419 @@
+<body>
+<canvas id="bg"></canvas>
+<canvas id="fx"></canvas>
+
+<div id="loadbar"></div>
+<div id="topbar">
+  <div id="logo" title="Secret" onclick="Logo.click()"><span class="lg-heart">💖</span> For <span id="tbHer">You</span></div>
+  <div class="spacer"></div>
+  <button class="tbtn hideS prop-only" onclick="Nav.go('s-games')">🎮 Games</button>
+  <button class="tbtn hideS prop-only" onclick="Vaults.open('gifts')">🎁 Gifts</button>
+  <button class="tbtn hideS prop-only" onclick="Vaults.open('ideas')">💡 Ideas</button>
+  <button class="tbtn hideS prop-only" onclick="ANIM.gallery()" title="Cutu Videos">🎬</button>
+  <button class="tbtn hideS prop-only" onclick="Vaults.open('features')">✨ Features</button>
+  <button class="tbtn" onclick="Themes.openDrawer()" title="Themes">🎨</button>
+  <button class="tbtn" id="musicBtn" onclick="AudioSys.toggleMusic()" title="Music">🎵</button>
+  <button class="tbtn hot" id="demoBtn" onclick="Demo.start()">▶ Demo</button>
+  <button class="tbtn" id="adminBtn" onclick="Admin.open()" title="Admin">🔒</button>
+</div>
+
+<div id="app">
+
+  <!-- ============ BOOT LOADER ============ -->
+  <div id="bootLoader"><div class="bl-heart">💗</div><div class="bl-bar"><div></div></div><div class="bl-txt" id="blTxt">pyaar load ho raha hai...</div></div>
+
+  <!-- ============ LANDING (creators) ============ -->
+  <section class="screen" id="s-landing">
+    <div class="center-wrap">
+      <div class="hero-badge">Bilkul free. Signup optional.</div>
+      <h1 class="hero-title">Kisi ko dil ki<br><span class="grad">baat</span> kehni hai?</h1>
+      <p class="hero-sub">Do minute ka kaam hai. Games, themes, live 3D background,<br class="hide-sm">gifts aur videos, sab ek hi page pe. Link bhejo,<br>jawab yahin dekho 💖</p>
+      <div class="btn-row" style="margin-top:28px">
+        <button class="btn big beat" onclick="Wizard.startUser()">Apna proposal banao</button>
+        <button class="btn ghost big" id="demoBtn3" onclick="Demo.start()">Demo dekho</button>
+      </div>
+      <div class="hero-chips">
+        <span class="chip">Games</span><span class="chip">Sawaal</span><span class="chip">Themes</span><span class="chip">Live 3D</span><span class="chip">Videos</span><span class="chip">Private</span>
+      </div>
+      <div class="btn-row" style="margin-top:18px">
+        <button class="btn ghost sm" onclick="Manage.open()">Mera proposal dekho</button>
+        <button class="btn ghost sm" onclick="Privacy.show()">Privacy</button>
+      </div>
+      <div id="userAuthBox" style="margin-top:20px"></div>
+      <p class="muted" style="margin-top:18px;font-size:13px">Data tumhara hai. Jab chahe delete karo.</p>
+    </div>
+  </section>
+
+  <!-- ============ MANAGE (creators) ============ -->
+  <section class="screen" id="s-manage">
+    <div class="center-wrap">
+      <div class="card" style="max-width:640px;width:100%">
+        <h2 class="glow-title" style="font-size:clamp(20px,3.6vw,30px)">Mera Proposal</h2>
+        <div id="mgAuthBox"></div>
+        <div id="mgList"></div>
+        <div style="margin-top:16px;border-top:1px solid var(--stroke);padding-top:14px">
+          <p class="muted" style="margin-bottom:8px">Kahin aur se? Link ID + manage code daalo:</p>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input class="inp" id="mgId" placeholder="prop-xxxxxxxx" style="min-width:150px;flex:1">
+            <input class="inp" id="mgCode" placeholder="manage code" style="min-width:130px;flex:1">
+            <button class="btn sm" onclick="Manage.manual()">Kholo 🔐</button>
+          </div>
+        </div>
+        <div id="mgStats" style="margin-top:14px"></div>
+        <div class="btn-row"><button class="btn ghost sm" onclick="Nav.go('s-landing')">⬅️ Home</button></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ INTRO ============ -->
+  <section class="screen active" id="s-intro">
+    <div class="center-wrap">
+      <img id="introPhoto" alt="💜">
+      <div class="big-face" id="introFace" title="hehe">💌</div>
+      <h1 class="glow-title" id="typedWrap"><span id="typed"></span></h1>
+      <span id="namePop">💖 <span id="namePopTxt"></span> 💖</span>
+      <div><button id="voiceBtn" title="Voice note 🎤">🎤</button></div>
+      <p class="sub fade-in" id="introSub" style="animation-delay:1.2s"></p>
+      <div class="btn-row fade-in" style="animation-delay:1.6s">
+        <button class="btn big beat" id="startBtn">Shuru karo</button>
+        <button class="btn ghost" id="demoBtn2" onclick="Demo.start()">Ye kaise chalta hai?</button>
+      </div>
+      <div class="progress-pill fade-in" style="animation-delay:2.1s" id="introPill">Ek bada surprise andar chhupa hai</div>
+      <div class="mini-links fade-in" id="miniLinks" style="animation-delay:2.4s">
+        <span class="linkish" onclick="Phone.open()">Lock screen</span>
+        <span class="linkish" onclick="Reasons.open()">Reasons</span>
+        <span class="linkish" onclick="Vaults.open('gifts')">Gift vault</span>
+        <span class="linkish" onclick="Vaults.open('ideas')">Idea factory</span>
+        <span class="linkish" onclick="Vaults.open('features')">Feature vault</span>
+        <span class="linkish" onclick="Eggs.openRoom()">Easter room</span>
+        <span class="linkish" onclick="Hug.start()">Jhappi 🫂</span>
+        <span class="linkish" onclick="FX2.kiss()">Kiss 😘</span>
+        <span class="linkish" onclick="FX2.wish()">Wish 🌠</span>
+        <span class="linkish" onclick="CINEMA.start()">Cinema 🎬</span>
+        <span class="linkish" onclick="Admin.open()">Admin</span>
+      </div>
+      <footer class="mini fade-in" style="animation-delay:2.7s">
+        Pyaar se banaya · <span id="eggBtn" style="cursor:pointer">🥚</span>
+      </footer>
+    </div>
+  </section>
+
+  <!-- ============ GAMES HUB ============ -->
+  <section class="screen" id="s-games">
+    <div class="center-wrap">
+      <h2 class="glow-title" style="font-size:clamp(24px,4.5vw,40px)">Pehle khelo, phir surprise milega</h2>
+      <p class="sub">Har game khelne par ek kadam surprise ke kareeb... 👀</p>
+      <div class="progress-pill" id="gamesPill">⭐ 0 / 5 games complete</div>
+      <div class="hub-grid" id="hubGrid"></div>
+      <div class="btn-row">
+        <button class="btn big" id="toQuestionsBtn">Aage Badho ➡️</button>
+        <button class="btn ghost" onclick="Nav.go('s-intro')">⬅️ Wapas</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ GAME: HEART CATCH ============ -->
+  <section class="screen" id="g-catch">
+    <div class="center-wrap">
+      <h2 class="glow-title" style="font-size:clamp(22px,4vw,34px)">Heart Catcher</h2>
+      <p class="sub">Girte hue hearts pakdo! 🧺 (💔 mat pakadna)</p>
+      <div class="hud"><span>⭐ Score: <b id="catchScore">0</b>/<span id="catchTarget">15</span></span><span>⏱️ <b id="catchTime">30</b>s</span><span id="catchBest" class="muted"></span></div>
+      <div class="arena" id="catchArena"><div id="basket">🧺</div></div>
+      <div class="btn-row"><button class="btn ghost" onclick="Games.endGame();Nav.go('s-games')">⬅️ Hub</button><button class="btn" id="catchRestart" style="display:none">🔁 Phir Se</button></div>
+    </div>
+  </section>
+
+  <!-- ============ GAME: MEMORY ============ -->
+  <section class="screen" id="g-memory">
+    <div class="center-wrap">
+      <h2 class="glow-title" style="font-size:clamp(22px,4vw,34px)">Dil Ka Memory</h2>
+      <p class="sub">Jodi milao! Har card mein ek chhota message chhupa hai 💌</p>
+      <div class="hud"><span>🎯 Moves: <b id="memMoves">0</b></span><span>❤️ Jodi: <b id="memPairs">0/6</b></span></div>
+      <div class="mem-grid" id="memGrid"></div>
+      <div class="btn-row"><button class="btn ghost" onclick="Games.endGame();Nav.go('s-games')">⬅️ Hub</button><button class="btn" id="memRestart" style="display:none">🔁 Phir Se</button></div>
+    </div>
+  </section>
+
+  <!-- ============ GAME: BALLOON POP ============ -->
+  <section class="screen" id="g-pop">
+    <div class="center-wrap">
+      <h2 class="glow-title" style="font-size:clamp(22px,4vw,34px)">Pyaar Pop</h2>
+      <p class="sub">🎈 phodo (+1), 💔 se bacho (-1)!</p>
+      <div class="hud"><span>💥 Popped: <b id="popScore">0</b>/<span id="popTarget">20</span></span><span>⏱️ <b id="popTime">30</b>s</span></div>
+      <div class="arena" id="popArena"></div>
+      <div class="btn-row"><button class="btn ghost" onclick="Games.endGame();Nav.go('s-games')">⬅️ Hub</button><button class="btn" id="popRestart" style="display:none">🔁 Phir Se</button></div>
+    </div>
+  </section>
+
+  <!-- ============ GAME: WHEEL ============ -->
+  <section class="screen" id="g-wheel">
+    <div class="center-wrap">
+      <h2 class="glow-title" style="font-size:clamp(22px,4vw,34px)">Pyaar Chakra</h2>
+      <p class="sub">Ghuma ke dekho... jo aaye wo karna padega! 😜</p>
+      <canvas id="wheelC" width="420" height="420"></canvas>
+      <div class="btn-row"><button class="btn big" id="spinBtn">🎡 Ghumao!</button><button class="btn ghost" onclick="Nav.go('s-games')">⬅️ Hub</button></div>
+      <p class="muted" id="wheelResult" style="margin-top:14px;font-size:16px;min-height:24px"></p>
+    </div>
+  </section>
+
+  <!-- ============ GAME: QUIZ ============ -->
+  <section class="screen" id="g-quiz">
+    <div class="center-wrap">
+      <div class="card" style="max-width:640px;width:100%">
+        <h2 class="glow-title" style="font-size:clamp(22px,4vw,32px)">Hum Dono Quiz</h2>
+        <div class="q-progress" id="quizDots"></div>
+        <h3 id="quizQ" style="font-size:clamp(17px,3vw,22px);margin:10px 0 16px;line-height:1.5"></h3>
+        <div id="quizOpts"></div>
+        <p class="muted" id="quizScore" style="margin-top:14px"></p>
+      </div>
+      <div class="btn-row"><button class="btn ghost" onclick="Nav.go('s-games')">⬅️ Hub</button></div>
+    </div>
+  </section>
+
+
+  <!-- ============ PHONE MIRROR ============ -->
+  <section class="screen" id="s-phone">
+    <div class="center-wrap">
+      <h2 class="glow-title" style="font-size:clamp(19px,3.4vw,28px);margin-bottom:16px">Tumhare phone pe ek message aaya hai</h2>
+      <div class="phone">
+        <div class="ph-wall" id="phWall"></div>
+        <div class="ph-status"><span id="phTime">9:41</span><span>📶 🔋</span></div>
+        <div class="ph-notch"></div>
+        <div class="ph-clock"><b id="phClock">9:41</b><span id="phDate"></span></div>
+        <div class="ph-notifs" id="phNotifs"></div>
+        <div class="ph-lock" id="phLocked" onclick="Phone.unlock()"><div class="ic">🔒</div><div><b>Locked note — <span id="phFrom">kisi khaas</span> ki taraf se</b><p style="font-size:12px;opacity:.7;margin:2px 0 0">Tap karke kholo 👆</p></div></div>
+        <div class="ph-note" id="phNote">
+          <h3>💌 Ek note</h3><div class="who" id="phWho"></div>
+          <div id="phNoteText"></div>
+          <button class="btn big" id="phGo" onclick="Nav.go('s-games')">Aur surprises hain 🎁</button>
+        </div>
+      </div>
+      <div class="btn-row" style="margin-top:18px"><button class="btn ghost sm" onclick="Nav.go('s-intro')">⬅️ Wapas</button></div>
+    </div>
+  </section>
+
+  <!-- ============ REASONS DECK ============ -->
+  <section class="screen" id="s-reasons">
+    <div class="center-wrap">
+      <h2 class="glow-title" style="font-size:clamp(20px,3.6vw,30px)">Tumhe kyu pasand karta hoon</h2>
+      <p class="sub">Har card pe tap karo — ek ek karke reason kholo 💘</p>
+      <div class="rs-dots" id="rsDots"></div>
+      <div class="rs-stage" id="rsStage"></div>
+      <div class="btn-row"><button class="btn ghost sm" onclick="Nav.go('s-intro')">⬅️ Wapas</button><button class="btn sm" onclick="Nav.go('s-games')">Aur dekho 🎁</button></div>
+    </div>
+  </section>
+
+  <!-- ============ QUESTIONS FLOW ============ -->
+  <section class="screen" id="s-questions">
+    <div class="center-wrap">
+      <div class="card" style="max-width:640px;width:100%">
+        <p class="muted" id="qStep" style="margin-bottom:10px">Sawaal 1 / 8</p>
+        <div class="qbar"><i id="qbarFill"></i></div>
+        <h2 id="flowQ" style="font-size:clamp(19px,3.4vw,26px);line-height:1.5;margin-bottom:18px;min-height:1.5em"></h2>
+        <div id="flowTyping" class="typing" style="display:none"><span></span><span></span><span></span></div>
+        <div id="flowOpts"></div>
+      </div>
+      <p class="sub" id="flowReact" style="min-height:26px;margin-top:16px;font-weight:700;font-size:17px"></p>
+    </div>
+  </section>
+
+  <!-- ============ FINAL QUESTION ============ -->
+  <section class="screen" id="s-final">
+    <div class="center-wrap">
+      <div class="big-face" style="font-size:clamp(44px,8vw,72px)">🥺</div>
+      <h1 class="glow-title" id="finalQText" style="font-size:clamp(24px,5vw,44px)"></h1>
+      <p class="sub" id="finalSub">Soch lo achhe se... kyunki iska jawab sirf haan hai 😈</p>
+      <div class="btn-row" id="finalRow" style="position:relative;width:min(94vw,640px);min-height:170px;margin-top:30px">
+        <button class="btn big" id="yesBtn">Haan! 💖</button>
+        <button class="btn ghost" id="noBtn">Nahi 😜</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CELEBRATE ============ -->
+  <section class="screen" id="s-celebrate">
+    <canvas id="mcv"></canvas>
+    <div id="celBar"></div>
+    <h1 class="cel-text glow-title" id="celT1" style="top:38%;left:0;right:0;font-size:clamp(30px,7vw,64px)">She said YES! 💍</h1>
+    <h2 class="cel-text" id="celT2" style="top:50%;left:0;right:0;font-size:clamp(20px,4.5vw,40px);text-shadow:0 4px 24px #ff4d6d">I LOVE YOU ❤️</h2>
+    <div class="cel-text" id="celT3" style="top:12%;left:0;right:0;font-size:clamp(40px,8vw,80px)">💑</div>
+    <div id="celEnd">
+      <img id="celPhoto" alt="photo">
+      <div class="big-face">💍</div>
+      <h1 class="glow-title" id="celEndTitle" style="font-size:clamp(24px,5vw,44px)">Hamesha Ke Liye ❤️</h1>
+      <p class="sub" id="celEndMsg"></p>
+      <div id="replyBox" style="width:min(92vw,460px);margin-top:6px">
+        <p style="font-weight:800;font-size:15px;margin-bottom:8px">Kuch kehna hai? Ye message poochega</p>
+        <textarea id="replyIn" class="inp" style="width:100%;min-height:74px;border-radius:16px" maxlength="500" placeholder="Dil ki baat likho yahan..."></textarea>
+        <div class="btn-row"><button class="btn" id="replySend">Bhejo</button></div>
+      </div>
+      <div class="btn-row">
+        <button class="btn big" onclick="Vaults.open('gifts')">Gifts kholo</button>
+        <button class="btn ghost" onclick="Cel.replay()">Replay</button>
+        <button class="btn ghost" onclick="Nav.go('s-intro')">Home</button>
+      </div>
+      <div class="btn-row" style="margin-top:10px">
+        <button class="btn sm" onclick="Hug.start()">🫂 Jhappi</button>
+        <button class="btn sm" onclick="FX2.kiss()">😘 Flying kiss</button>
+        <button class="btn ghost sm" onclick="FX2.petals(18)">🌹 Petal shower</button>
+        <button class="btn ghost sm" onclick="FX2.finale()">🎆 Grand finale</button>
+        <button class="btn ghost sm" onclick="CINEMA.start()">🎬 Cinema</button>
+      </div>
+      <footer class="credit">Made with 💖 by <a href="https://instagram.com/your_x_calling" target="_blank" rel="noopener">Kartik Sharma</a> (web-owner) — missing his Chiku Pie</footer>
+    </div>
+    <button class="btn ghost sm" id="celSkip" onclick="Cel.skip()">Skip ⏭️</button>
+  </section>
+
+  <!-- ============ GIFT VAULT ============ -->
+  <section class="screen" id="s-gifts">
+    <div class="center-wrap">
+      <div class="v-head">
+        <h2 class="glow-title" style="font-size:clamp(24px,4.5vw,40px)">🎁 Gift Vault</h2>
+        <p class="sub">200+ digital gifts — har ek tumhare liye, har ek special ✨</p>
+        <div class="stat-chips">
+          <span class="s-chip">🎁 Total: <b id="giftTotalN">0</b></span>
+          <span class="s-chip">❤️ Collected: <b id="giftGotN">0</b></span>
+          <span class="s-chip">🏆 Legendary: <b id="giftLegN">8</b></span>
+        </div>
+      </div>
+      <div class="v-tools">
+        <input class="inp" id="giftSearch" placeholder="🔍 Gift dhoondo...">
+        <button class="btn ghost sm" onclick="Nav.go('s-intro')">🏠</button>
+      </div>
+      <div class="v-tools" id="giftChips"></div>
+      <div class="gift-grid" id="giftGrid"></div>
+      <div class="btn-row"><button class="btn ghost" id="giftMore">Aur Dikha ↓</button></div>
+    </div>
+  </section>
+
+  <!-- ============ IDEAS ============ -->
+  <section class="screen" id="s-ideas">
+    <div class="center-wrap">
+      <div class="v-head">
+        <h2 class="glow-title" style="font-size:clamp(24px,4.5vw,40px)">💡 Idea Factory</h2>
+        <p class="sub">Dates, surprises, lines & bucket list — sab ek jagah 🚀</p>
+      </div>
+      <div class="v-tools">
+        <input class="inp" id="ideaSearch" placeholder="🔍 Idea dhoondo...">
+        <button class="btn ghost sm" onclick="Nav.go('s-intro')">🏠</button>
+      </div>
+      <div class="v-tools" id="ideaChips"></div>
+      <div class="list-box" id="ideaList"></div>
+      <div class="btn-row"><button class="btn ghost" id="ideaMore">Aur Dikha ↓</button></div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURES ============ -->
+  <section class="screen" id="s-features">
+    <div class="center-wrap">
+      <div class="v-head">
+        <h2 class="glow-title" style="font-size:clamp(24px,4.5vw,40px)">✨ Feature Vault</h2>
+        <p class="sub">Har corner mein pyaar chhupa hai — micro-interactions everywhere ✨</p>
+        <div class="stat-chips"><span class="s-chip">📊 Total: <b id="featTotalN">0</b></span></div>
+      </div>
+      <div class="v-tools">
+        <input class="inp" id="featSearch" placeholder="🔍 Feature dhoondo...">
+        <button class="btn ghost sm" onclick="Nav.go('s-intro')">🏠</button>
+      </div>
+      <div class="v-tools" id="featChips"></div>
+      <div class="list-box" id="featList"></div>
+      <div class="btn-row"><button class="btn ghost" id="featMore">Aur Dikha ↓</button></div>
+    </div>
+  </section>
+
+  <!-- ============ CUTU VIDEOS GALLERY ============ -->
+  <section class="screen" id="s-anim">
+    <div class="center-wrap">
+      <div class="v-head">
+        <h2 class="glow-title" style="font-size:clamp(24px,4.5vw,40px)">🎬 Cutu Videos</h2>
+        <p class="sub">Pyaari chhoti animation movies — har ek mein tumhara pyaar 💝</p>
+        <div class="stat-chips"><span class="s-chip">🎬 Videos: <b id="animTotalN">0</b></span></div>
+      </div>
+      <div class="v-tools">
+        <button class="btn sm" onclick="ANIM.playRandom()">🎲 Random Video</button>
+        <button class="btn ghost sm" onclick="Nav.go('s-intro')">🏠 Home</button>
+      </div>
+      <div class="gift-grid" id="animGrid"></div>
+    </div>
+  </section>
+
+  <!-- ============ VIDEO PLAYER ============ -->
+  <section class="screen" id="s-anim-play">
+    <div class="center-wrap">
+      <h2 class="glow-title" id="animTitle" style="font-size:clamp(20px,3.5vw,30px)"></h2>
+      <div class="anim-stage"><canvas id="acv"></canvas><div class="vprog"><div id="animProg"></div></div></div>
+      <div class="btn-row">
+        <button class="btn" onclick="ANIM.replay()">🔁 Replay</button>
+        <button class="btn ghost" onclick="ANIM.next()">⏭️ Next</button>
+        <button class="btn ghost" onclick="ANIM.gallery()">🎬 Gallery</button>
+        <button class="btn ghost" onclick="Nav.go('s-intro')">🏠 Home</button>
+      </div>
+      <p class="muted">36 videos hain — sab dekhna 😉</p>
+    </div>
+  </section>
+
+  <!-- ============ SETUP WIZARD ============ -->
+  <section class="screen" id="s-wizard">
+    <div class="center-wrap">
+      <div class="card" style="max-width:600px;width:100%;text-align:center">
+        <h2 class="glow-title" style="font-size:clamp(20px,3.6vw,30px)">🪄 Setup Wizard</h2>
+        <p class="muted" id="wizStep" style="margin:6px 0 14px">Step 1 / 5</p>
+        <div class="q-progress" id="wizDots"></div>
+        <div id="wizBody" style="margin-top:14px;text-align:left"></div>
+        <div class="btn-row">
+          <button class="btn ghost" id="wizPrev">⬅️ Peeche</button>
+          <button class="btn" id="wizNext">Aage ➡️</button>
+        </div>
+      </div>
+      <button class="btn ghost sm" id="wizBack" style="margin-top:14px" onclick="Wizard.exit()">⬅️ Wapas</button>
+    </div>
+  </section>
+
+  <!-- ============ ADMIN ============ -->
+  <section class="screen" id="s-admin">
+    <div class="admin-wrap">
+      <div class="card login-box" id="adminLogin">
+        <div style="font-size:52px">🔒</div>
+        <h2 class="glow-title" style="font-size:26px">Admin Panel</h2>
+        <p class="muted" style="margin:8px 0 16px">Sirf owner ke liye 🤫</p>
+        <input class="inp" id="adminEmail" type="email" placeholder="📧 Email" autocomplete="off">
+        <input class="inp" id="adminPass" type="password" placeholder="🔑 Password" autocomplete="off">
+        <div class="btn-row"><button class="btn" onclick="Admin.login()" style="width:100%">Login 💕</button></div>
+        <p class="muted" id="adminErr" style="margin-top:12px;color:#ff8fa3"></p>
+        <div class="g-divider">ya Google se sign in</div>
+        <div id="gbtnWrap"><span class="muted" style="font-size:12.5px">⏳ Google button...</span></div>
+        <p class="linkish" style="margin-top:14px" onclick="ACTIONS.gSetup()">📖 Google sign-in setup (2 min)</p>
+        <p class="linkish" style="margin-top:14px" onclick="Nav.go('s-intro')">⬅️ Wapas</p>
+      </div>
+      <div id="adminPanel" style="display:none;text-align:center">
+        <h2 class="glow-title" style="font-size:clamp(22px,4vw,34px)">👑 Admin Control Center</h2>
+        <p class="muted" id="adminHi"></p>
+        <div id="adminUserChip"></div>
+        <div class="btn-row" style="margin-top:10px">
+          <button class="btn sm" onclick="Wizard.start()">🪄 Setup Wizard</button>
+          <button class="btn ghost sm" onclick="ServerAPI.renderLinks();Nav.go('s-admin')">🔄 Links refresh</button>
+        </div>
+        <div class="a-tabs" id="adminTabs"></div>
+        <div class="a-panel" id="adminBody"></div>
+        <p class="a-count muted">⚙️ <b id="ctrlCount">0</b> controls loaded — full power tumhare haath mein 😈</p>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Drawer + modals + toasts -->
+<div id="themeDrawer"><h3>🎨 Themes</h3><div class="theme-grid" id="themeGrid"></div>
+  <div class="btn-row"><button class="btn ghost sm" onclick="Themes.closeDrawer()">Band Karo ✖️</button></div></div>
+
+<div class="modal-veil" id="giftModal"><div class="modal" id="giftModalBody"></div></div>
+<div class="modal-veil" id="eggModal"><div class="modal" id="eggModalBody"></div></div>
+<div class="modal-veil" id="genModal"><div class="modal" id="genModalBody"></div></div>
+
+<div id="toasts"></div>
+<div id="demoBanner">🎬 DEMO MODE — main sirf dikha raha hoon ki website kaise chalti hai 😉 <button class="dbtn" onclick="Demo.stop()">✖ Skip Demo</button></div>
+<div class="konami-hint" id="konamiHint">🥚 kuch secrets chhupe hain... (hints: Easter Room mein)</div>
+<div id="quickFx">
+  <button id="qfMusic" title="Music on/off" aria-label="Music">🎵</button>
+  <button id="qf3d" title="3D background on/off" aria-label="3D background">🌌</button>
+</div>
+<button id="gyroBtn">📱 Motion tilt on karo</button>
