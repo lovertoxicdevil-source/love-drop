@@ -1,0 +1,25 @@
+# 💖 LOVE DROP — Netlify deploy (static + serverless functions + Supabase DB)
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+[functions]
+  node_bundler = "esbuild"
+
+# API routes → function
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api/:splat"
+  status = 200
+
+# Proposal share links → function (OG tags + view counting + injected boot)
+[[redirects]]
+  from = "/p/*"
+  to = "/.netlify/functions/page/:splat"
+  status = 200
+
+# SPA fallback — sab kuch jo nahi milta wo index se serve
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
