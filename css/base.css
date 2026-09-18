@@ -3,37 +3,37 @@
 
 @font-face {
   font-family: 'Bricolage Grotesque';
-  src: url('../fonts/bricolage-grotesque-latin-500-normal.woff2') format('woff2');
+  src: url('https://ktzyncoafautqanxxeou.supabase.co/storage/v1/object/public/fonts/bricolage-grotesque-latin-500-normal.woff2') format('woff2');
   font-weight: 500;
   font-display: swap;
 }
 @font-face {
   font-family: 'Bricolage Grotesque';
-  src: url('../fonts/bricolage-grotesque-latin-700-normal.woff2') format('woff2');
+  src: url('https://ktzyncoafautqanxxeou.supabase.co/storage/v1/object/public/fonts/bricolage-grotesque-latin-700-normal.woff2') format('woff2');
   font-weight: 700;
   font-display: swap;
 }
 @font-face {
   font-family: 'Bricolage Grotesque';
-  src: url('../fonts/bricolage-grotesque-latin-800-normal.woff2') format('woff2');
+  src: url('https://ktzyncoafautqanxxeou.supabase.co/storage/v1/object/public/fonts/bricolage-grotesque-latin-800-normal.woff2') format('woff2');
   font-weight: 800;
   font-display: swap;
 }
 @font-face {
   font-family: 'Inter';
-  src: url('../fonts/inter-latin-400-normal.woff2') format('woff2');
+  src: url('https://ktzyncoafautqanxxeou.supabase.co/storage/v1/object/public/fonts/inter-latin-400-normal.woff2') format('woff2');
   font-weight: 400;
   font-display: swap;
 }
 @font-face {
   font-family: 'Inter';
-  src: url('../fonts/inter-latin-500-normal.woff2') format('woff2');
+  src: url('https://ktzyncoafautqanxxeou.supabase.co/storage/v1/object/public/fonts/inter-latin-500-normal.woff2') format('woff2');
   font-weight: 500;
   font-display: swap;
 }
 @font-face {
   font-family: 'Inter';
-  src: url('../fonts/inter-latin-600-normal.woff2') format('woff2');
+  src: url('https://ktzyncoafautqanxxeou.supabase.co/storage/v1/object/public/fonts/inter-latin-600-normal.woff2') format('woff2');
   font-weight: 600;
   font-display: swap;
 }
