@@ -4,7 +4,7 @@
   const { $, $$, toast, haptic, api, typewriter } = UI;
 
   // code teen jagah se mil sakta hai: seedha /p/<code>, ?c=<code>, ya 404-page redirect se sessionStorage
-  let code = (location.pathname.match(/.\/p\/([a-z0-9-]+)$/i) || [])[1]
+  let code = (location.pathname.match(/\/p\/([a-z0-9-]+)$/i) || [])[1]
     || new URLSearchParams(location.search).get('c')
     || '';
   try {
@@ -13,7 +13,7 @@
   } catch (e) { /* private mode */ }
   code = code.replace(/[^a-z0-9-]/gi, '');
   const isDemo = code === 'demo';
-  if (code && !/.\/p\/[a-z0-9-]+$/i.test(location.pathname)) {
+  if (code && !/\/p\/[a-z0-9-]+$/i.test(location.pathname)) {
     try { history.replaceState(null, '', '/p/' + code); } catch (e) { /* koi baat nahi */ }
   }
 
@@ -334,7 +334,7 @@
       } catch (e) { /* pehle se answered case bhi yahin aata hai */ }
     } else {
       secret = {
-        note: 'Ye demo note hai. Asli page pe tumhara likha hua note aata hai, akshar dar akshar..\n\nBas itna hi. Baaki mil ke.',
+        note: 'Ye demo note hai. Asli page pe tumhara likha hua note aata hai, akshar dar akshar.\n\nBas itna hi. Baaki mil ke.',
         reasons: ['Tumhari hasi se din banta hai', 'Gussa bhi cute lagta hai', 'Bina baat ki call kar deti ho', 'Khana saath khaya toh zyada mazaa aata hai'],
         photo: null
       };
