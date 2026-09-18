@@ -56,7 +56,7 @@
 
   // offline "help me write" — keywords se Hinglish draft, koi API nahi
   function draftNote(keywords, names) {
-    const kw = String(keywords || '').split(/[,.\n]/).map((s) => s.trim()).filter(Boolean).slice(0, 4);
+    const kw = String(keywords || '').split(/[,\n]/).map((s) => s.trim()).filter(Boolean).slice(0, 4);
     const to = (names && names.partner_name) || 'Tum';
     const from = (names && names.creator_name) || 'Main';
     const lines = [
