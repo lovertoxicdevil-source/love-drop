@@ -94,7 +94,7 @@ const R={tab:0,rows:[
   {t:"ğŸ”Š Sound",ty:"range",l:"Volume",k:"volume",min:0,max:1,step:.05,fx:"vol"},
   {t:"ğŸ”Š Sound",ty:"select",l:"Music tune",k:"tune",o:["Soft Arpeggio","Dreamy Waltz","Starlight"],ovals:[0,1,2]},
   {t:"ğŸ”Š Sound",ty:"select",l:"Music source",k:"musicSource",o:["Synth tune","Custom gaana ğŸµ"],ovals:["synth","custom"]},
-  {t:"ğŸ”Š Sound",ty:"text",l:"Custom audio URL (mp3 link)",k:"audioUrl",s:"Kahin host kiya hai toh direct link paste karo"},
+  {t:"ğŸ”Š Sound",ty:"text",l:"Custom audio URL (mp3 link)",k:"audioUrl",s:"Kahin host kiya hai thh direct link paste karo"},
   {t:"ğŸ”Š Sound",ty:"btn",l:"Apna gaana upload ğŸ§",act:"audioUp",s:"<1.5MB â†’ permanent save Â· badi file â†’ sirf is session"},
   {t:"ğŸ”Š Sound",ty:"btn",l:"Test gaana chalao â–¶",act:"audioTest"},
   {t:"ğŸ”Š Sound",ty:"btn",l:"Test sound effect ğŸµ",act:"testSfx"},
@@ -189,8 +189,7 @@ const ACTIONS={
         img.onload=()=>{
           const mx=720,sc=Math.min(1,mx/Math.max(img.width,img.height));
           const cv=document.createElement("canvas");cv.width=Math.round(img.width*sc);cv.height=Math.round(img.height*sc);
-          cv.getContext("2d").drawImage(img,0,0,cv.width,cv.height);
-          CFG[key]=cv.toDataURL("image/jpeg",.82);saveCfg();Intro.applyNames();
+          cvgetContext("image/jpeg",.82);saveCfg();Intro.applyNames();
           Toast.show("ğŸ–¼ï¸ "+label+" set! (auto-compressed "+cv.width+"Ã—"+cv.height+")");Fx.confetti(20);
         };
         img.onerror=()=>Toast.show("âŒ Ye image load nahi hui");
@@ -211,10 +210,10 @@ const ACTIONS={
           AudioSys.stopMusic();if(CFG.music)AudioSys.startMusic();
           Toast.show("ğŸµ Gaana saved: <b>"+esc(f.name)+"</b> â€” ab ye loop chalega!")};
         rd.readAsDataURL(f);
-      }else{
+    }else{
         CFG.audioUrl=URL.createObjectURL(f);CFG.musicSource="custom";saveCfg();
         AudioSys.stopMusic();if(CFG.music)AudioSys.startMusic();
-        Toast.show("ğŸµ Gaana chal raha hai â€” <b>session-only</b> (file badi hai). Chhoti file (<1.5MB) save hoti hai.");
+        Toast.show("ğŸµGaana chal raha hai â€” <b>session-only</b> (file badi hai). Chhoti file (<1.5MB) save hoti hai.");
       }};
     inp.click();
   },
@@ -245,273 +244,360 @@ const ACTIONS={
     Modal.open("genModal");
     $("#genModalBody").innerHTML=`
       <div style="font-size:48px">ğŸ”</div><h3>Google Sign-In Setup (2 min)</h3>
-      <div style="text-align:left;font-size:13.5px;line-height:1.9;color:#ffd9e2">
-      1ï¸âƒ£ <b>console.cloud.google.com</b> kholo â†’ project banao<br>
-      2ï¸âƒ£ <b>APIs \u0026amp; Services â†’ Credentials â†’ Create Credentials â†’ OAuth client ID</b><br>
-      3ï¸âƒ£ Application type: <b>Web application</b><br>
+      <div style="text-align:left;font-size:13.5px;line-height:1.9;color:#ffd9e2h¾
+      1ï¸âƒ£ <b>console.cloud.google.com</b> kholo â†’ project banao</br>
+      2ï¸âƒ£ <b>APIS &amp; Services â†’ Credentials â†’ Create Credentials â†’ OAuth client ID</b><br>
+      3ï¸âƒ£ <b>Application type: <b>Web application</b><br>
       4ï¸âƒ£ <b>Authorized JavaScript origins</b> mein apni site ka URL daalo<br>
       &nbsp;&nbsp;&nbsp;(jaise <code>https://your-site.netlify.app</code>)<br>
       5ï¸âƒ£ Client ID copy karke niche paste karo âœ…</div>
-      <p class="muted" style="margin-top:10px">âš ï¸ Jis link pe site live hogi, wahi origin add karna. Preview sandbox mein Google script block hota hai â€” deployed site pe perfect chalega. Client ID set hone tak password login bhi kaam karta rahega.</p>
-      <input class="inp" id="gcidIn" placeholder="XXXX.apps.googleusercontent.com" style="width:100%;margin-top:8px" value="${esc(CFG.gClientId)}">
-      <div class="btn-row">
-        <button class="btn" onclick="GS.saveId()">Save Client ID âœ…</button>
-        <button class="btn ghost" onclick="GS.simulate()">ğŸ§ª Preview test login</button>
-      </div>`;
-  },
-  unlockEggs(){EGGS.forEach(e=>Eggs.got.add(e.id));LS.set("eggs",[...Eggs.got]);S.eggs=Eggs.got.size;saveStats();Eggs.updateBadge();Admin.render();Toast.show("ğŸ¥š Saare eggs unlocked â€” ab asli maza hints ke bina aayega ğŸ˜„")},
-  resetStats(){Object.assign(S,{views:0,games:0,yes:0,noDodge:0,gifts:0,eggs:0,secs:0});saveStats();Admin.render();Toast.show("ğŸ“Š Stats reset")},
-  genLink(){Share.generate(true)},
-  prevLink(){Share.generate(false);window.open(Share.last,"_blank")},
-  waLink(){Share.generate(false);window.open("https://wa.me/?text="+encodeURIComponent(Share.last+(CFG.shareMsg?"\n\n"+CFG.shareMsg:"")),"_blank")},
-  async savePw(){
-    const np=($("#newPwIn")?.value||"").trim(),op=($("#oldPwIn")?.value||"").trim();
-    if(np.length<4)return Toast.show("Naya password kam se kam 4 characters");
-    if(SRV.mode==="server"&&SRV.token){
-      try{
-        const r=await fetch("api/admin/pw",{method:"POST",headers:ServerAPI.hdr(),body:JSON.stringify({old:op,new:np})});
-        const j=await r.json();
-        if(j.ok){$("#oldPwIn")&&($("#oldPwIn").value="");$("#newPwIn")&&($("#newPwIn").value="");Toast.show("ğŸ” Server password changed! Naya password yaad rakhna");return}
-        return Toast.show("âŒ "+(j.msg||"Password change fail"));
-      }catch(e){}
-    }
-    CFG.pw=np;saveCfg();Toast.show("ğŸ” Password saved (local mode)");
-  },
-  logout(){LS.del("adminOk");LS.del("gUser");GS.user=null;$("#adminPanel").style.display="none";$("#adminLogin").style.display="block";GS.mount();Toast.show("Bye Admin ğŸ‘‹")},
-  exportCfg(){const data=JSON.stringify(CFG,null,2);const a=document.createElement("a");
-    a.href=URL.createObjectURL(new Blob([data],{type:"application/json"}));a.download="love-config.json";a.click();Toast.show("ğŸ’¾ Config exported")},
-  importCfg(){const inp=document.createElement("input");inp.type="file";inp.accept="application/json";
-    inp.onchange=()=>{const f=inp.files[0];if(!f)return;const rd=new FileReader();
-      rd.onload=()=>{try{const j=JSON.parse(rd.result);CFG=Object.assign(CFG,j);delete CFG.pw;saveCfg();location.reload()}catch(e){Toast.show("âŒ Invalid file")}};rd.readAsText(f)};
-    inp.click();},
-  selfTest(){
-    const res=[];
-    res.push(["Canvas",!!BG.ctx&&!!Fx.ctx]);
-    res.push(["Audio API",!!(window.AudioContext||window.webkitAudioContext)]);
-    let okLS=false;try{localStorage.setItem("ld_t","1");localStorage.removeItem("ld_t");okLS=true}catch(e){}
-    res.push(["LocalStorage",okLS]);
-    res.push(["Gifts 200+ ("+Gifts.count()+")",Gifts.count()>=200]);
-    res.push(["Ideas 500+ ("+Ideas.count()+")",Ideas.count()>=500]);
-    res.push(["Features 1000+ ("+Feats.count()+")",Feats.count()>=1000]);
-    res.push(["Themes 50 ("+THEMES.length+")",THEMES.length===50]);
-    res.push(["Admin controls 100+ ("+Admin.count()+")",Admin.count()>=100]);
-    res.push(["Easter eggs ("+EGGS.length+")",EGGS.length>=12]);
-    res.push(["Cutu videos 30+ ("+VIDS.length+")",VIDS.length>=30]);
-    const pass=res.every(r=>r[1]);
-    Modal.open("genModal");
-    $("#genModalBody").innerHTML=`<div style="font-size:52px">${pass?"âœ…":"âš ï¸"}</div><h3>Self Test</h3>
-      <div style="text-align:left;font-size:14px;line-height:2">${res.map(r=>`${r[1]?"âœ…":"âŒ"} ${r[0]}`).join("<br>")}</div>
-      <div class="btn-row"><button class="btn" onclick="Modal.close('genModal')">Perfect ğŸ‘Œ</button></div>`;
-    AudioSys.sfx(pass?"good":"nope");
-  },
-  factory(){if(confirm("SACH MEIN? Sab data delete ho jayega (config, stats, eggs, gifts)... ğŸ˜¨")){try{Object.keys(localStorage).filter(k=>k.startsWith("ld_")).forEach(k=>localStorage.removeItem(k))}catch(e){}location.reload()}}
-};
+      <p class="muted" style="margin-top:10px">âš ï¸ Jus link pe site live hogi, wahi origin add karna. Preview sandbox mein Google script bl[ØÚÈİHZH8 %\ŞYYÚ]HH\™™XİÚ[YØKˆÛY[QÙ]Û™HZÈ\ÜİÛÜ™ÙÚ[ˆšHØX[HØ\H˜ZYØKÜ‚ˆ[œ]Û\ÜÏHš[œˆYH™ØÚY[ˆˆXÙZÛ\H–˜\Ë™ÛÛÙÛ]\Ù\˜ÛÛ[˜ÛÛHˆİ[OHÚYŒL	NÛX\™Ú[‹]Üˆ˜[YOH‰Ù\ØÊÑ‘Ë™ĞÛY[Y
+_H‚ˆ]ˆÛ\ÜÏH˜‹\›İÈ‚ˆ]ÛˆÛ\ÜÏH˜ˆˆÛ˜ÛXÚÏH‘ÔËœØ]™RY
 
-const Share={
-  last:"",
-  generate(copy){
-    const base=location.href.split("#")[0];
-    let payload;
-    if(CFG.shareScope==="full"){const{pw,...rest}=CFG;payload=Object.assign({},rest,{__scope:"full"})}
-    else{payload={__scope:"mini",herName:CFG.herName,hisName:CFG.hisName,introTitle:CFG.introTitle,introSub:CFG.introSub,finalQ:CFG.finalQ,letter:CFG.letter,afterYesMsg:CFG.afterYesMsg,theme:$("#incTheme")?.checked!==false?CFG.theme:undefined,msg:CFG.shareMsg||undefined}}
-    this.last=base+"#c="+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(payload)))));
-    const ta=$("#shareOut");if(ta){ta.value=this.last}
-    if(copy){
-      const done=()=>Toast.show("ğŸ“‹ Link copy ho gaya! Ab usko bhej do â€” wo kholte hi naam saamne ğŸ’Œ");
-      if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(this.last).then(done).catch(()=>this.fallbackCopy(done));
-      else this.fallbackCopy(done);
-    }
-  },
-  fallbackCopy(done){const ta=$("#shareOut");if(ta){ta.removeAttribute("readonly");ta.select();try{document.execCommand("copy");done()}catch(e){Toast.show("Link select ho gaya â€” manually copy kar lo ğŸ™")}ta.setAttribute("readonly","")}}
-};
+H”Ø]™HÛY[Q8§!OØ]Û‚ˆ]ÛˆÛ\ÜÏH˜ˆÚÜİˆÛ˜ÛXÚÏH‘ÔËœÚ[][]J
+H¼'éêˆ™]šY]È\İÙÚ[Ø]Û‚ˆÙ]˜ÂˆKˆ[›ØÚÑYÙÜÊ
+^ÑQÑÔË™›Ü‘XXÚ
+OO‘YÙÜË™Ûİ˜Y
+KšY
+JNÓËœÙ]
+™YÙÜÈ‹Ë‹‹‘YÙÜË™ÛİJNÔË™YÙÜÏQYÙÜË™ÛİœÚ^™NÜØ]™Tİ]Ê
+NÑYÙÜË\]P˜YÙJ
+NĞYZ[‹œ™[™\Š
+NÕØ\İœÚİÊ¼'éfˆØX\™HYÙÜÈ[›ØÚÙY8 %Xˆ\ÛHX^˜H[ÈÙHš[˜HX^YYØH<'æ!Š_Kˆ™\Ù]İ]Ê
+^ÓØš™Xİ˜\ÜÚYÛŠËİšY]ÜÎŒØ[Y\ÎŒY\ÎŒ›ÑÙÙNŒÚYÎŒYÙÜÎŒÙXÜÎŒJNÜØ]™Tİ]Ê
+NĞYZ[‹œ™[™\Š
+NÕØ\İœÚİÊ¼'äâˆİ]È™\Ù]Š_KˆÙ[“[šÊ
+^ÔÚ\™K™Ù[™\˜]JYJ_Kˆ™]“[šÊ
+^ÔÚ\™K™Ù[™\˜]J˜[ÙJNİÚ[™İË›Ü[ŠÚ\™K›\İ—Ø›[šÈŠ_KˆØS[šÊ
+^ÔÚ\™K™Ù[™\˜]J˜[ÙJNİÚ[™İË›Ü[ŠšÎ‹ËİØK›YKÏİ^HŠÙ[˜ÛÙUT’PÛÛ\Û™[
+Ú\™K›\İ
+ÊÑ‘ËœÚ\™S\ÙÏÈ——ˆŠĞÑ‘ËœÚ\™S\ÙÎˆˆŠJK—Ø›[šÈŠ_Kˆ\Ş[˜ÈØ]™TÊ
+^ÂˆÛÛœİœJ	
+ˆÛ™]ÔÒ[ˆŠOË˜[Y_ˆŠKš[J
+KÜJ	
+ˆÛÛÒ[ˆŠOË˜[Y_ˆŠKš[J
+NÂˆYŠœ›[™İ
+\™]\›ˆØ\İœÚİÊ“˜^XH\ÜİÛÜ™Ø[HÙHØ[HÚ\˜Xİ\œÈŠNÂˆYŠÔ•‹›[ÙOOOHœÙ\™\ˆ‰‰”Ô•‹ÚÙ[Š^Âˆ^ÂˆÛÛœİX]ØZ]™]Ú
+˜\KØYZ[‹ÜÈ‹ÛY]Ùˆ”ÔÕ‹XY\œÎ”Ù\™\TKšŠ
+K›ÙN’”ÓÓ‹œİš[™ÚYJÛÛ›Ü™XÎ›œJ_JNÂˆÛÛœİX]ØZ]‹šœÛÛŠ
+NÂˆYŠ‹›ÚÊ^É
+ˆÛÛÒ[ˆŠI‰Š	
+ˆÛÛÒ[ˆŠK˜[YOHˆŠNÉ
+ˆÛ™]ÔÒ[ˆŠI‰Š	
+ˆÛ™]ÔÒ[ˆŠK˜[YOHˆŠNÕØ\İœÚİÊ¼'å$Ù\™\ˆ\ÜİÛÜ™Ú[™ÙYH˜^XH\ÜİÛÜ™XXY˜ZÚ˜HŠNÜ™]\›ŸBˆ™]\›ˆØ\İœÚİÊ¸§cŠÊ‹›\Ùß”\ÜİÛÜ™Ú[™ÙH˜Z[ŠJNÂˆXØ]Ú
+J^ßBˆBˆÑ‘ËœÏ[œÜØ]™PÙ™Ê
+NÕØ\İœÚİÊ¼'å$\ÜİÛÜ™Ø]™Y
+ØØ[[ÙJHŠNÂˆKˆÙÛİ]
 
-const Admin={
-  count(){return R.rows.length},
-  open(){
-    Nav.go("s-admin");
-    if(LS.get("adminOk",false)&&S.adminOkOnce)this.render();else{$("#adminLogin").style.display="block";$("#adminPanel").style.display="none"}
+^ÓË™[
+˜YZ[“ÚÈŠNÓË™[
+™Õ\Ù\ˆŠNÑÔË\Ù\[[É
+ˆØYZ[”[™[ŠKœİ[K™\Ü^OH››Û™HÉ
+ˆØYZ[“ÙÚ[ˆŠKœİ[K™\Ü^OH˜›ØÚÈÑÔË›[İ[
 
-  },
-  _grant(msg){
-    LS.set("adminOk",true);S.adminOkOnce=true;saveStats();
-    $("#adminErr").textContent="";$("#adminLogin").style.display="none";
-    this.render();AudioSys.sfx("good");Fx.confetti(50);
-    Toast.show(msg);
-  },
-  async login(){
-    const em=$("#adminEmail").value.trim().toLowerCase(),pw=$("#adminPass").value;
-    if(em!==ADMIN_EMAIL){$("#adminErr").textContent="âŒ Galat email â€” sirf owner allowed hai";AudioSys.sfx("nope");return}
-    // WEB APP MODE: server-side auth (hashed pw + session token)
-    if(SRV.mode==="server"){
-      try{
-        const j=await ServerAPI.login(pw,em);
-        if(j.ok){
-          SRV.token=j.token;LS.set("adminToken",j.token);
-          if(j.user){GS.user=j.user;LS.set("gUser",j.user)}
-          this._grant("ğŸ‘‘ Welcome back, Admin! Poora control tumhare haath mein"+(j.user?" (Google verified âœ…)":""));
-          if(!LS.get("wizardDone",false))setTimeout(()=>Wizard.start(),900);
-          return;
-        }
-        $("#adminErr").textContent="âŒ "+(j.msg||"Login fail");AudioSys.sfx("nope");return;
-      }catch(e){Toast.show("âš ï¸ Server tak nahi pahuncha â€” local check chala raha hoon")}
-    }
-    // fallback: local (portable file mode)
-    const p=LS.get("pw","iloveyou");
-    if(pw===p)this._grant("ğŸ‘‘ Welcome back, Admin! (local mode)");
-    else{$("#adminErr").textContent="âŒ Galat password ğŸ˜…";AudioSys.sfx("nope")}
-  },
-  sideFx(k){
-    if(k==="theme"||k==="density"||k==="speed"){if(k==="theme")BG.apply(CFG.theme,false);else BG.build()}
-    if(k==="accent")document.documentElement.style.setProperty("--accent",CFG.accent);
-    if(k==="radius")document.documentElement.style.setProperty("--radius",CFG.radius+"px");
-    if(k==="blur")document.documentElement.style.setProperty("--blur",CFG.blur+"px");
-    if(k==="font"){const F={seg:"'Segoe UI',system-ui,sans-serif",georgia:"Georgia,'Times New Roman',serif",nunito:"'Trebuchet MS',Verdana,sans-serif",mono:"'Courier New',monospace"};document.body.style.fontFamily=F[CFG.font]||F.seg}
-    if(k==="glow")document.body.classList.toggle("noglow",!CFG.glow);
-    if(k==="vol")AudioSys.setVol();
-    if(k==="introTitle"){$("#typed").textContent=CFG.introTitle}
-    if(k=="introSub")$("#introSub").textContent=CFG.introSub;
-    if(k==="herName"){$("#tbHer").textContent=CFG.herName==="Meri Jaan"?"You":CFG.herName}
-    if(k=="music"){CFG.music?AudioSys.startMusic():AudioSys.stopMusic()}
-    if(k=="musicSource"){AudioSys.stopMusic();if(CFG.music)AudioSys.startMusic()}
-    if(k=="d3"&&!CFG.d3){$$(".tilt3d").forEach(el=>{el.style.setProperty("--rx","0deg");el.style.setProperty("--ry","0deg")});const a=$("#app");if(a)a.style.transform=""}
-    if(k=="d3"||k=="bg3d"){try{if(typeof BG3D!=="undefined"){if(BG3D.enabled()&&CFG.d3){BG3D.resume();if(BG.theme)BG3D.sync(BG.theme)}else BG3D.halt()}}catch(e){}}
-    if(k=="showEggCounter"){$("#konamiHint").style.display=CFG.showEggCounter?"block":"none"}
-    if(k&&k.startsWith("quiz"))this.parseQuiz();
-    Eggs.updateBadge();
-  },
-  parseQuiz(){
-    for(let i=1;i<=5;i++){
-      const raw=(CFG["quiz"+i]||"").trim();
-      if(!raw)continue;
-      const parts=raw.split("|").map(x=>x.trim()).filter(Boolean);
-      if(parts.length>=2){
-        CFG.quiz[i-1]={q:parts[0],o:parts.slice(1,4),r:CFG.quiz[i-1]&&CFG.quiz[i-1].r&&CFG.quiz[i-1].r.length===3?CFG.quiz[i-1].r:["Aww ğŸ’•","Haha ğŸ˜‚","Sahi hai ğŸ˜Œ"]};
-      }
-    }
-  },
-  render(){
-    $("#adminPanel").style.display="block";
-    $("#adminHi").textContent=`${ADMIN_EMAIL} â€” ${CFG.herName} ke liye sab kuch customize karo ğŸ’•`;
-    const gu=GS.user;
-    $("#adminUserChip").innerHTML=gu
-      ?`<span class="a-user">${gu.picture?`<img src="${esc(gu.picture)}" alt="">`:"âœ…"} Signed in as <b>&nbsp;${esc(gu.name||gu.email)}</b>&nbsp;Â· ${esc(gu.email)}${gu.sim?" Â· ğŸ§ª test":""}</span>`
-      :`<span class="a-user">ğŸ”‘ Password login Â· ${esc(ADMIN_EMAIL)}</span>`;
-    const tabs=[...new Set(R.rows.map(r=>r.t))];
-    $("#adminTabs").innerHTML=tabs.map((t,i)=>`<button class="a-tab ${i===R.tab?"on":""}" data-i="${i}">${t}</button>`).join("");
-    $$("#adminTabs .a-tab").forEach(b=>b.onclick=()=>{R.tab=+b.dataset.i;this.render()});
-    $("#ctrlCount").textContent=this.count();
-    const body=$("#adminBody");body.innerHTML="";
-    R.rows.filter(r=>r.t===tabs[R.tab]).forEach(r=>{
-      const row=document.createElement("div");row.className="a-row";
-      let ctl="";
-      if(r.ty==="text"||r.ty==="date"||r.ty==="pw")ctl=`<input class="inp" type="${r.ty==="date"?"date":r.ty==="pw"?"password":"text"}" value="${esc(r.k?String(CFG[r.k]??""):"")}" data-k="${r.k||""}" data-id="${r.id||""}">`;
-      else if(r.ty==="textarea")ctl=`<textarea class="inp" data-k="${r.k||""}">${esc(r.k?String(CFG[r.k]??""):"")}</textarea>`;
-      else if(r.ty==="num")ctl=`<input class="inp" type="number" style="max-width:110px" value="${CFG[r.k]}" min="${r.min}" max="${r.max}" data-k="${r.k}">`;
-      else if(r.ty==="range")ctl=`<input type="range" min="${r.min}" max="${r.max}" step="${r.step}" value="${CFG[r.k]}" data-k="${r.k}"><span class="muted" style="min-width:40px">${CFG[r.k]}</span>`;
-      else if(r.ty==="color")ctl=`<input type="color" value="${CFG[r.k]}" data-k="${r.k}">`;
-      else if(r.ty==="select"){const vals=r.ovals||r.o;const cur=r.k==="tune"?String(CFG[r.k]):CFG[r.k];
-        ctl=`<select class="inp" data-k="${r.k}">${r.o.map((o,i)=>`<option value="${esc(String(vals[i]))}" ${String(cur)===String(vals[i])?"selected":""}>${esc(o)}</option>`).join("")}</select>`;}
-      else if(r.ty==="toggle")ctl=`<label class="switch"><input type="checkbox" ${CFG[r.k]?"checked":""} data-k="${r.k}"><span class="sl"></span></label>`;
-      else if(r.ty==="btn")ctl=`<button class="btn sm" data-act="${r.act}">${esc(r.l.split(" ").slice(-1))} â–¶</button>`;
-      else if(r.ty==="html")ctl=r.html;
-      else if(r.ty==="info")ctl=`<b style="color:var(--accent2);font-size:13.5px;max-width:340px;text-align:right">${esc(String(r.info()))}</b>`;
-      row.innerHTML=`<label>${esc(r.l)}${r.s?`<small>${esc(r.s)}</small>`:""}</label>${ctl}`;
-      body.appendChild(row);
-    });
-    // bindings
-    $$("#adminBody [data-k]").forEach(el=>{
-      const k=el.dataset.k;if(!k)return;
-      const ev=el.type==="range"||el.type==="color"||el.tagName==="SELECT"?"input":(el.type==="checkbox"?"change":"change");
-      el.addEventListener(ev,()=>{
-        let v;
-        if(el.type==="checkbox")v=el.checked;
-        else if(el.type=="range"){v=parseFloat(el.value);const sp=el.nextElementSibling;if(sp&&sp.classList.contains("muted"))sp.textContent=v}
-        else if(el.type=="number")v=clamp(parseFloat(el.value)||0,parseFloat(el.min)||0,parseFloat(el.max)||9999);
-        else if(k==="tune")v=parseInt(el.value);
-        else v=el.value;
-        CFG[k]=v;saveCfg();this.sideFx(k);
-      });
-      if(el.type==="range")el.addEventListener("change",()=>{if(k==="density"||k=="speed")BG.build()});
-    });
-    $$("#adminBody [data-act]").forEach(b=>b.onclick=()=>{ACTIONS[b.dataset.act]&&ACTIONS[b.dataset.act]()});
-    $("#incTheme")&&($("#incTheme").checked=true);
-    const so=$("#shareOut");if(so){so.value=Share.last||"Generate + Copy dabao â€” link yahan aayega ğŸ’Œ";so.setAttribute("readonly","")}
-    if(tabs[R.tab]==="ğŸ”— Share")ServerAPI.renderLinks();
-    Eggs.updateBadge();
-  }
-};
+NÕØ\İœÚİÊYHYZ[ˆ<'äbÈŠ_Kˆ^ÜÙ™Ê
+^ØÛÛœİ]OR”ÓÓ‹œİš[™ÚYJÑ‘Ë[ŠNØÛÛœİOYØİ[Y[˜Ü™X]Q[[Y[
+˜HŠNÂˆKš™YUT“˜Ü™X]SØš™XİT“
+™]È›ØŠÙ]WKİ\Nˆ˜\XØ][Û‹ÚœÛÛˆŸJJNØK™İÛ›ØYH›İ™KXÛÛ™šYËšœÛÛˆØK˜ÛXÚÊ
+NÕØ\İœÚİÊ¼'ä¯ˆÛÛ™šYÈ^ÜYŠ_Kˆ[\ÜÙ™Ê
+^ØÛÛœİ[œYØİ[Y[˜Ü™X]Q[[Y[
+š[œ]ŠNÚ[œ\OH™š[HÚ[œ˜XØÙ\H˜\XØ][Û‹ÚœÛÛˆÂˆ[œ›Û˜Ú[™ÙOJ
+OOØÛÛœİZ[œ™š[\ÖÌNÚYŠYŠ\™]\›ØÛÛœİ™[™]Èš[T™XY\Š
+NÂˆ™›Û›ØYJ
+OOİ^ØÛÛœİR”ÓÓ‹œ\œÙJ™œ™\İ[
+NĞÑ‘ÏSØš™Xİ˜\ÜÚYÛŠÑ‘ËŠNÙ[]HÑ‘ËœÎÜØ]™PÙ™Ê
+NÛØØ][Û‹œ™[ØY
 
-/* ================= GOOGLE SIGN-IN ================= */
-const GS={
-  user:null,_loading:false,
-  mount(){
-    const wrap=$("#gbtnWrap");if(!wrap)return;
-    if(this.user){wrap.innerHTML=`<span class="a-user">âœ… ${esc(this.user.name||this.user.email)} (Google)</span>`;return}
-    if(!CFG.gClientId){
-      wrap.innerHTML=`<p class="muted" style="font-size:12.5px;max-width:300px">ğŸ”‘ Google Client ID set nahi hai â€” <span class="linkish" onclick="ACTIONS.gSetup()">setup guide kholo (2 min)</span> ya password se login karo</p>`;
-      return;
-    }
-    if(window.google&&window.google.accounts&&window.google.accounts.id){this.renderBtn();return}
-    wrap.innerHTML=`<p class="muted" style="font-size:12.5px">â³ Google load ho raha...</p>`;
-    if(this._loading)return;this._loading=true;
-    const s=document.createElement("script");
-    s.src="https://accounts.google.com/gsi/client";s.async=true;s.defer=true;
-    s.onload=()=>{this._loading=false;this.renderBtn()};
-    s.onerror=()=>{this._loading=false;
-      wrap.innerHTML=`<p class="muted" style="font-size:12.5px;max-width:320px">âš ï¸ Google script yahan load nahi hua (preview sandbox/offline). <b>Deployed link pe ye button turant kaam karega.</b> Filhal password ya test login use karo.</p><span class="linkish" onclick="GS.simulate()">ğŸ§ª Preview test login</span>`;
-    };
-    document.head.appendChild(s);
-  },
-  renderBtn(){
-    const wrap=$("#gbtnWrap");if(!wrap||!window.google||!window.google.accounts)return;
-    try{
-      google.accounts.id.initialize({client_id:CFG.gClientId,callback:r=>GS.onCred(r)});
-      wrap.innerHTML="";
-      google.accounts.id.renderButton(wrap,{theme:"filled_black",size:"large",shape:"pill",text:"continue_with",locale:"en",width:280});
-    }catch(e){wrap.innerHTML='<p class="muted" style="font-size:12.5px">âš ï¸ Google button error: '+esc(e.message)+'</p>'}
-  },
-  saveId(){
-    const v=($("#gcidIn")?.value||"").trim();
-    if(!v){Toast.show("âŒ Client ID khaali hai");return}
-    CFG.gClientId=v;saveCfg();Modal.close("genModal");
-    Toast.show("âœ… Google Client ID saved! Ab <b>Sign in with Google</b> button active hai");
-    this._loading=false;this.mount();
-  },
-  simulate(){this.grant({email:ADMIN_EMAIL,name:"Owner",picture:null,sim:true})},
-  b64d(p){p=p.replace(/-/g,"+").replace(/_/g,"/");while(p.length%4)p+"=";
-    return decodeURIComponent(atob(p).split("").map(ch=>"%"+("00"+ch.charCodeAt(0).toString(16)).slice(-2)).join(""))},
-  async onCred(resp){
-    // v11: admin login screen par nahi hain? toh ye credential NORMAL USER sign-in hai â€” route karo
-    const adminBox=$("#adminLogin");
-    const onAdminScreen=!!(document.querySelector("#s-admin.active")&&adminBox&&adminBox.style.display!=="none");
-    if(!onAdminScreen&&typeof UserAuth!=="undefined")return UserAuth.onCred(resp);
-    // WEB APP MODE: server verifies the Google token properly
-    if(SRV.mode==="server"){
-      try{
-        const j=await ServerAPI.glogin(resp.credential);
-        if(j.ok){
-          SRV.token=j.token;LS.set("adminToken",j.token);
-          this.user=j.user;LS.set("gUser",j.user);
-          $("#adminLogin").style.display="none";
-          Admin.render();AudioSys.sfx("good");Fx.confetti(60);
-          Toast.show("âœ… Google sign-in success!<br>Welcome <b>"+esc(j.user.name||j.user.email)+"</b> ğŸ‘‘");return;
-        }
-        Toast.show("âŒ "+(j.msg||"Google login fail"));AudioSys.sfx("nope");return;
-      }catch(e){/* offline â€” fallback below */}
-    }
-    try{
-      const u=JSON.parse(this.b64d(resp.credential.split(".")[1]));
-      this.grant({email:(u.email||"").toLowerCase(),name:u.name||u.email,picture:u.picture||null});
-    }catch(e){Toast.show("âŒ Google response parse nahi hua â€” dobara try karo")}
-  },
-  grant(u){
-    if((u.email||"").toLowerCase()!==ADMIN_EMAIL){
-      Toast.show("âŒ Ye Google account owner ka nahi hai<br>Sirf <b>"+ADMIN_EMAIL+"</b> allowed hai ğŸ˜");
-      AudioSys.sfx("nope");return;
-    }
-    this.user=u;LS.set("gUser",u);LS.set("adminOk",true);S.adminOkOnce=true;saveStats();
-    const lb=$("#adminLogin");if(lb)lb.style.display="none";
-    Admin.render();AudioSys.sfx("good");Fx.confetti(60);
-    Toast.show("âœ… Google sign-in success!<br>Welcome <b>"+esc(u.name||u.email)+"</b> ğŸ‘‘");
-  }
-};
+_XØ]Ú
+J^ÕØ\İœÚİÊ¸§c[˜[Yš[HŠ__NÜ™œ™XY\Õ^
+Š_NÂˆ[œ˜ÛXÚÊ
+NßKˆÙ[•\İ
+
+^ÂˆÛÛœİ™\ÏV×NÂˆ™\Ëœ\Ú
+ÈØ[˜\È‹HP‘Ë˜İ	‰ˆHQ˜İJNÂˆ™\Ëœ\Ú
+È]Y[ÈTH‹HJÚ[™İË]Y[ĞÛÛ^Ú[™İËÙXšÚ]]Y[ĞÛÛ^
+WJNÂˆ]ÚÓÏY˜[ÙNİ^ÛØØ[İÜ˜YÙKœÙ]][J›İ‹ŒHŠNÛØØ[İÜ˜YÙKœ™[[İ™R][J›İŠNÛÚÓÏ]Y_XØ]Ú
+J^ßBˆ™\Ëœ\Ú
+È“ØØ[İÜ˜YÙH‹ÚÓ×JNÂˆ™\Ëœ\Ú
+È‘ÚYÈŒ
+È
+ŠÑÚYË˜Ûİ[
+
+JÈŠH‹ÚYË˜Ûİ[
+
+OLŒJNÂˆ™\Ëœ\Ú
+È’YX\ÈL
+È
+ŠÒYX\Ë˜Ûİ[
+
+JÈŠH‹YX\Ë˜Ûİ[
+
+OMLJNÂˆ™\Ëœ\Ú
+È‘™X]\™\ÈL
+È
+ŠÑ™X]Ë˜Ûİ[
+
+JÈŠH‹™X]Ë˜Ûİ[
+
+OLLJNÂˆ™\Ëœ\Ú
+È•[Y\ÈL
+ŠÕSQTË›[™İ
+ÈŠH‹SQTË›[™İOOMLJNÂˆ™\Ëœ\Ú
+ÈYZ[ˆÛÛ›ÛÈL
+È
+ŠĞYZ[‹˜Ûİ[
+
+JÈŠH‹YZ[‹˜Ûİ[
+
+OLLJNÂˆ™\Ëœ\Ú
+È‘X\İ\ˆYÙÜÈ
+ŠÑQÑÔË›[™İ
+ÈŠH‹QÑÔË›[™İLL—JNÂˆ™\Ëœ\Ú
+Èİ]HšY[ÜÈÌ
+È
+ŠÕ’QË›[™İ
+ÈŠH‹’QË›[™İLÌJNÂˆÛÛœİ\ÜÏ\™\Ë™]™\JOœ–ÌWJNÂˆ[Ù[›Ü[Š™Ù[“[Ù[ŠNÂˆ	
+ˆÙÙ[“[Ù[›ÙHŠKš[›™\’SX]ˆİ[OH™›Û\Ú^™NLœ‰Ü\ÜÏÈ¸§!Hˆ¸¦¨;î#ÈŸOÙ]Ï”Ù[ˆ\İÚÏ‚ˆ]ˆİ[OH^X[YÛ›YÙ›Û\Ú^™NŒMÛ[™KZZYÚŒˆ‰Ü™\Ë›X\
+O˜	Ü–ÌWOÈ¸§!Hˆ¸§cŸH	Ü–Ì_X
+Kš›Ú[ŠœˆŠ_OÙ]‚ˆ]ˆÛ\ÜÏH˜‹\›İÈ]ÛˆÛ\ÜÏH˜ˆˆÛ˜ÛXÚÏH“[Ù[˜ÛÜÙJ	ÙÙ[“[Ù[	ÊH”\™™Xİ<'äcØ]ÛÙ]˜Âˆ]Y[ÔŞ\ËœÙ
+\ÜÏÈ™ÛÛÙˆ››ÜHŠNÂˆKˆ˜XİÜJ
+^ÚYŠÛÛ™š\›J”ĞPÒQRSÈØXˆ]H[]HÈ˜^YYØH
+ÛÛ™šYËİ]ËYÙÜËÚYÊK‹‹ˆ<'æ*ŠJ^İ^ÓØš™XİšÙ^\ÊØØ[İÜ˜YÙJK™š[\ŠÏOšËœİ\ÕÚ]
+›ÈŠJK™›Ü‘XXÚ
+ÏO›ØØ[İÜ˜YÙKœ™[[İ™R][JÊJ_XØ]Ú
+J^ß[ØØ][Û‹œ™[ØY
+
+__BŸNÂ‚˜ÛÛœİÚ\™O^Âˆ\İˆˆ‹ˆÙ[™\˜]JÛÜJ^ÂˆÛÛœİ˜\ÙO[ØØ][Û‹š™Y‹œÜ]
+ˆÈŠVÌNÂˆ]^[ØYÂˆYŠÑ‘ËœÚ\™TØÛÜOOOH™[Š^ØÛÛœİÜË‹‹œ™\İOPÑ‘ÎÜ^[ØYSØš™Xİ˜\ÜÚYÛŠßK™\İ××ÜØÛÜNˆ™[ŸJ_Bˆ[Ù^Ü^[ØY^××ÜØÛÜNˆ›Z[šH‹\“˜[YNÑ‘Ëš\“˜[YK\Ó˜[YNÑ‘Ëš\Ó˜[YK[›Õ]NÑ‘Ëš[›Õ]K[›ÔİXÑ‘Ëš[›ÔİX‹š[˜[NÑ‘Ë™š[˜[K]\Ñ‘Ë›]\‹Y\–Y\Ó\ÙÎÑ‘Ë˜Y\–Y\Ó\ÙË[YN‰
+ˆÚ[˜Õ[YHŠOË˜ÚXÚÙYOOY˜[ÙOĞÑ‘Ë[YN[™Yš[™Y\ÙÎÑ‘ËœÚ\™S\Ùß[™Yš[™Y_Bˆ\Ë›\İX˜\ÙJÈˆØÏHŠÙ[˜ÛÙUT’PÛÛ\Û™[
+ØJ[™\ØØ\J[˜ÛÙUT’PÛÛ\Û™[
+”ÓÓ‹œİš[™ÚYJ^[ØY
+JJJJNÂˆÛÛœİOI
+ˆÜÚ\™Sİ]ŠNÚYŠJ^İK˜[YO]\Ë›\İBˆYŠÛÜJ^ÂˆÛÛœİÛ™OJ
+OO•Ø\İœÚİÊ¼'äâÈ[šÈÛÜHÈØ^XHHXˆ\ÚÛÈšZˆÈ8 %ÛÈÚÛHH˜X[HØX[[™H<'ä£ŠNÂˆYŠ˜]šYØ]Ü‹˜Û\›Ø\™	‰›˜]šYØ]Ü‹˜Û\›Ø\™Üš]U^
+[˜]šYØ]Ü‹˜Û\›Ø\™Üš]U^
+\Ë›\İ
+K[ŠÛ™JK˜Ø]Ú
+
+
+OO\Ë™˜[˜XÚĞÛÜJÛ™JJNÂˆ[ÙH\Ë™˜[˜XÚĞÛÜJÛ™JNÂˆBˆKˆ˜[˜XÚĞÛÜJÛ™J^ØÛÛœİOI
+ˆÜÚ\™Sİ]ŠNÚYŠJ^İKœ™[[İ™P]šX]Jœ™XYÛ›HŠNİKœÙ[Xİ
+
+Nİ^ÙØİ[Y[™^XĞÛÛ[X[™
+˜ÛÜHŠNÙÛ™J
+_XØ]Ú
+J^ÕØ\İœÚİÊ“[šÈÙ[XİÈØ^XH8 %X[X[HÛÜHØ\ˆÈ<'æcÈŠ_]KœÙ]]šX]Jœ™XYÛ›H‹ˆŠ__BŸNÂ‚˜ÛÛœİYZ[^ÂˆÛİ[
+
+^Ü™]\›ˆ‹œ›İÜË›[™İKˆÜ[Š
+^Âˆ˜]‹™ÛÊœËXYZ[ˆŠNÂˆYŠË™Ù]
+˜YZ[“ÚÈ‹˜[ÙJI‰”Ë˜YZ[“ÚÓÛ˜ÙJ]\Ëœ™[™\Š
+NÙ[Ù^É
+ˆØYZ[“ÙÚ[ˆŠKœİ[K™\Ü^OH˜›ØÚÈÉ
+ˆØYZ[”[™[ŠKœİ[K™\Ü^OH››Û™HŸB‚ˆKˆÙÜ˜[
+\ÙÊ^ÂˆËœÙ]
+˜YZ[“ÚÈ‹YJNÔË˜YZ[“ÚÓÛ˜ÙO]YNÜØ]™Tİ]Ê
+NÂˆ	
+ˆØYZ[‘\œˆŠK^ÛÛ[HˆÉ
+ˆØYZ[“ÙÚ[ˆŠKœİ[K™\Ü^OH››Û™HÂˆ\Ëœ™[™\Š
+NĞ]Y[ÔŞ\ËœÙ
+™ÛÛÙŠNÑ˜ÛÛ™™]JL
+NÂˆØ\İœÚİÊ\ÙÊNÂˆKˆ\Ş[˜ÈÙÚ[Š
+^ÂˆÛÛœİ[OI
+ˆØYZ[‘[XZ[ŠK˜[YKš[J
+KÓİÙ\Ø\ÙJ
+KÏI
+ˆØYZ[”\ÜÈŠK˜[YNÂˆYŠ[HOOPQRS—ÑSPRS
+^É
+ˆØYZ[‘\œˆŠK^ÛÛ[H¸§cØ[][XZ[8 %Ú\™ˆİÛ™\ˆ[İÙYZHĞ]Y[ÔŞ\ËœÙ
+››ÜHŠNÜ™]\›ŸBˆËÈÑPˆTSÑNˆÙ\™\‹\ÚYH]]
+\ÚYÈ
+ÈÙ\ÜÚ[ÛˆÚÙ[ŠBˆYŠÔ•‹›[ÙOOOHœÙ\™\ˆŠ^Âˆ^ÂˆÛÛœİX]ØZ]Ù\™\TK›ÙÚ[ŠË[JNÂˆYŠ‹›ÚÊ^ÂˆÔ•‹ÚÙ[Z‹ÚÙ[ÓËœÙ]
+˜YZ[•ÚÙ[ˆ‹‹ÚÙ[ŠNÂˆYŠ‹\Ù\Š^ÑÔË\Ù\Z‹\Ù\ÓËœÙ]
+™Õ\Ù\ˆ‹‹\Ù\Š_Bˆ\Ë—ÙÜ˜[
+¼'ädHÙ[ÛÛYH˜XÚËYZ[ˆHÛÜ˜HÛÛ›Û[Z\™HX]YZ[ˆŠÊ‹\Ù\Èˆ
+ÛÛÙÛH™\šYšYY8§!JHˆˆŠJNÂˆYŠSË™Ù]
+Ú^˜\™Û™H‹˜[ÙJJ\Ù][Y[İ]
+
+
+OO•Ú^˜\™œİ\
+
+KL
+NÂˆ™]\›ÂˆBˆ	
+ˆØYZ[‘\œˆŠK^ÛÛ[H¸§cŠÊ‹›\Ùß“ÙÚ[ˆ˜Z[ŠNĞ]Y[ÔŞ\ËœÙ
+››ÜHŠNÜ™]\›ÂˆXØ]Ú
+J^ÕØ\İœÚİÊ¸¦¨;î#ÈÙ\™\ˆZÈ˜ZHZ[˜ÚH8 %ØØ[ÚXÚÈÚ[H˜ZHÛÛˆŠ_BˆBˆËÈ˜[˜XÚÎˆØØ[
+ÜX›Hš[H[ÙJBˆÛÛœİSË™Ù]
+œÈ‹š[İ™^[İHŠNÂˆYŠÏOO\
+]\Ë—ÙÜ˜[
+¼'ädHÙ[ÛÛYH˜XÚËYZ[ˆH
+ØØ[[ÙJHŠNÂˆ[Ù^É
+ˆØYZ[‘\œˆŠK^ÛÛ[H¸§cØ[]\ÜİÛÜ™<'æ!HĞ]Y[ÔŞ\ËœÙ
+››ÜHŠ_BˆKˆÚYQ
+Ê^ÂˆYŠÏOOH[YHŸÏOOH™[œÚ]HŸÏOOHœÜYYŠ^ÚYŠÏOOH[YHŠP‘Ë˜\JÑ‘Ë[YK˜[ÙJNÙ[ÙH‘Ë˜Z[
+
+_BˆYŠÏOOH˜XØÙ[ŠYØİ[Y[™Øİ[Y[[[Y[œİ[KœÙ]›Ü\J‹KXXØÙ[‹Ñ‘Ë˜XØÙ[
+NÂˆYŠÏOOHœ˜Y]\ÈŠYØİ[Y[™Øİ[Y[[[Y[œİ[KœÙ]›Ü\J‹K\˜Y]\È‹Ñ‘Ëœ˜Y]\ÊÈœŠNÂˆYŠÏOOH˜›\ˆŠYØİ[Y[™Øİ[Y[[[Y[œİ[KœÙ]›Ü\J‹KX›\ˆ‹Ñ‘Ë˜›\ŠÈœŠNÂˆYŠÏOOH™›ÛŠ^ØÛÛœİ^ÜÙYÎˆ‰ÔÙYÛÙHRIËŞ\İ[K]ZKØ[œË\Ù\šYˆ‹Ù[Ü™ÚXNˆ‘Ù[Ü™ÚXK	Õ[Y\È™]È›ÛX[‰ËÙ\šYˆ‹[š]Îˆ‰Õ™XXÚ]TÉË™\™[˜KØ[œË\Ù\šYˆ‹[Û›Îˆ‰ĞÛİ\šY\ˆ™]ÉË[Û›ÜÜXÙHŸNÙØİ[Y[˜›ÙKœİ[K™›Û˜[Z[OQ–ĞÑ‘Ë™›Û_‹œÙYßBˆYŠÏOOH™ÛİÈŠYØİ[Y[˜›ÙK˜Û\ÜÓ\İÙÙÛJ››ÙÛİÈ‹PÑ”‹™ÛİÊNÂˆYŠÏOOH›ÛŠP]Y[ÔŞ\ËœÙ]›Û
+
+NÂˆYŠÏOOHš[›Õ]HŠ^É
+ˆİ\YŠK^ÛÛ[PÑ‘Ëš[›Õ]_BˆYŠÏOOHš[›ÔİXˆŠI
+ˆÚ[›ÔİXˆŠK^ÛÛ[PÑ‘Ëš[›ÔİXÂˆYŠÏOOHš\“˜[YHŠ^É
+ˆİ’\ˆŠK^ÛÛ[PÑ‘Ëš\“˜[YOOOH“Y\šH˜X[ˆÈ–[İHÑ‘Ëš\“˜[Y_BˆYŠÏOOH›]\ÚXÈŠ^ĞÑ‘Ë›]\ÚXÏĞ]Y[ÔŞ\Ëœİ\]\ÚXÊ
+N]Y[ÔŞ\ËœİÜ]\ÚXÊ
+_BˆYŠÏOOH›]\ÚXÔÛİ\˜ÙHŠ^Ğ]Y[ÔŞ\ËœİÜ]\ÚXÊ
+NÚYŠÑ‘Ë›]\ÚXÊP]Y[ÔŞ\Ëœİ\]\ÚXÊ
+_BˆYŠÏOOH™È‰‰ˆPÑ‘Ë™Ê^É	
+‹[ÙŠK™›Ü‘XXÚ
+[OÙ[œİ[KœÙ]›Ü\J‹K\‹ŒYÈŠNÙ[œİ[KœÙ]›Ü\J‹K\H‹ŒYÈŠ_JNØÛÛœİOI
+ˆØ\ŠNÚYŠJXKœİ[K˜[œÙ›Ü›OHˆŸBˆYŠÏOOH™ÈŸÏOOH˜™ÌÙŠ^İ^ÚYŠ\[Ùˆ‘ÌÑOOH[™Yš[™YŠ^ÚYŠ‘ÌÑ™[˜X›Y
+
+I‰Ñ‘Ë™Ê^Ğ‘ÌÑœ™\İ[YJ
+NÚYŠ‘Ë[YJP‘ÌÑœŞ[˜Ê‘Ë[YJ_Y[ÙH‘ÌÑš[
+
+__XØ]Ú
+J^ß_BˆYŠÏOOHœÚİÑYÙĞÛİ[\ˆŠ^É
+ˆÚÛÛ˜[ZR[ŠKœİ[K™\Ü^OPÑ‘ËœÚİÑYÙĞÛİ[\È˜›ØÚÈˆ››Û™HŸBˆYŠÉ‰šËœİ\ÕÚ]
+œ]Z^ˆŠJ]\Ëœ\œÙT]Z^Š
+NÂˆYÙÜË\]P˜YÙJ
+NÂˆKˆ\œÙT]Z^Š
+^Âˆ›ÜŠ]OLNÚOMNÚJÊÊ^ÂˆÛÛœİ˜]ÏJÑ‘ÖÈœ]Z^ˆŠÚW_ˆŠKš[J
+NÂˆYŠ\˜]ÊXÛÛ[YNÂˆÛÛœİ\Ï\˜]ËœÜ]
+ŸŠK›X\
+Oš[J
+JK™š[\Š›ÛÛX[ŠNÂˆYŠ\Ë›[™İLŠ^ÂˆÑ‘Ëœ]Z^–ÚKLWO^ÜNœ\ÖÌKÎœ\ËœÛXÙJK
+KÑ‘Ëœ]Z^–ÚKLWI‰Ñ‘Ëœ]Z^–ÚKLWKœ‰‰Ñ‘Ëœ]Z^–ÚKLWKœ‹›[™İOOLÏĞÑ‘Ëœ]Z^–ÚKLWKœ–È]İÈ<'ä¥H‹’ZH<'æ ˆ‹”ØZHZH<'æ#—_NÂˆBˆBˆKˆ™[™\Š
+^Âˆ	
+ˆØYZ[”[™[ŠKœİ[K™\Ü^OH˜›ØÚÈÂˆ	
+ˆØYZ[’HŠK^ÛÛ[X	ĞQRS—ÑSPRSH8 %	ĞÑ‘Ëš\“˜[Y_HÙH^YHØXˆİXÚİ\İÛZ^™HØ\›È<'ä¥XÂˆÛÛœİİOQÔË\Ù\Âˆ	
+ˆØYZ[•\Ù\Ú\ŠKš[›™\’SYİBˆØÜ[ˆÛ\ÜÏH˜K]\Ù\ˆ‰ÙİKœXİ\™OØ[YÈÜ˜ÏH‰Ù\ØÊİKœXİ\™J_Hˆ[Hˆ˜ˆ¸§!HŸHÚYÛ™Y[ˆ\È‰›˜œÜÉÙ\ØÊİK›˜[Y_İK™[XZ[
+_OØ‰›˜œÜğ­È	Ù\ØÊİK™[XZ[
+_IÙİKœÚ[OÈˆ0­È<'éêˆ\İˆˆŸOÜÜ[˜ˆ˜Ü[ˆÛ\ÜÏH˜K]\Ù\ˆ¼'å$H\ÜİÛÜ™ÙÚ[ˆ0­È	Ù\ØÊQRS—ÑSPRS
+_OÜÜ[˜ÂˆÛÛœİXœÏVË‹‹›™]ÈÙ]
+‹œ›İÜË›X\
+Oœ‹
+JWNÂˆ	
+ˆØYZ[•XœÈŠKš[›™\’S]XœË›X\
+
+JOO˜]ÛˆÛ\ÜÏH˜K]Xˆ	ÚOOOT‹XÈ›ÛˆˆˆŸHˆ]KZOH‰Ú_H‰İOØ]Û˜
+Kš›Ú[ŠˆŠNÂˆ		
+ˆØYZ[•XœÈ˜K]XˆŠK™›Ü‘XXÚ
+O˜‹›Û˜ÛXÚÏJ
+OOÔ‹XJØ‹™]\Ù]šNİ\Ëœ™[™\Š
+_JNÂˆ	
+ˆØİ›Ûİ[ŠK^ÛÛ[]\Ë˜Ûİ[
+
+NÂˆÛÛœİ›ÙOI
+ˆØYZ[›ÙHŠNØ›ÙKš[›™\’SHˆÂˆ‹œ›İÜË™š[\ŠOœ‹OO]XœÖÔ‹X—JK™›Ü‘XXÚ
+OÂˆÛÛœİ›İÏYØİ[Y[˜Ü™X]Q[[Y[
+™]ˆŠNÜ›İË˜Û\ÜÓ˜[YOH˜K\›İÈÂˆ]İHˆÂˆYŠ‹OOOH^Ÿ‹OOOH™]HŸ‹OOOHœÈŠXİX[œ]Û\ÜÏHš[œˆ\OH‰Ü‹OOOH™]HÈ™]Hœ‹OOOHœÈÈœ\ÜİÛÜ™ˆ^ŸHˆ˜[YOH‰Ù\ØÊ‹šÏÔİš[™ÊÑ‘ÖÜ‹š×OÏÈˆŠNˆˆŠ_Hˆ]KZÏH‰Ü‹šßˆŸHˆ]KZYH‰Ü‹šYˆŸH˜Âˆ[ÙHYŠ‹OOOH^\™XHŠXİX^\™XHÛ\ÜÏHš[œˆ]KZÏH‰Ü‹šßˆŸH‰Ù\ØÊ‹šÏÔİš[™ÊÑ‘ÖÜ‹š×OÏÈˆŠNˆˆŠ_Oİ^\™XO˜Âˆ[ÙHYŠ‹OOOH›[HŠXİX[œ]Û\ÜÏHš[œˆ\OH›[X™\ˆˆİ[OH›X^]ÚYŒLLˆ˜[YOH‰ĞÑ‘ÖÜ‹š×_HˆZ[H‰Ü‹›Z[ŸHˆX^H‰Ü‹›X^Hˆ]KZÏH‰Ü‹šßH˜Âˆ[ÙHYŠ‹OOOHœ˜[™ÙHŠXİX[œ]\OHœ˜[™ÙHˆZ[H‰Ü‹›Z[ŸHˆX^H‰Ü‹›X^Hˆİ\H‰Ü‹œİ\Hˆ˜[YOH‰ĞÑ‘ÖÜ‹š×_Hˆ]KZÏH‰Ü‹šßHÜ[ˆÛ\ÜÏH›]]Yˆİ[OH›Z[‹]ÚY‰ĞÑ‘ÖÜ‹š×_OÜÜ[˜Âˆ[ÙHYŠ‹OOOH˜ÛÛÜˆŠXİX[œ]\OH˜ÛÛÜˆˆ˜[YOH‰ĞÑ‘ÖÜ‹š×_Hˆ]KZÏH‰Ü‹šßH˜Âˆ[ÙHYŠ‹OOOHœÙ[XİŠ^ØÛÛœİ˜[Ï\‹›İ˜[ß‹›ÎØÛÛœİİ\\‹šÏOOH[™HÔİš[™ÊÑ‘ÖÜ‹š×JNÑ‘ÖÜ‹š×NÂˆİXÙ[XİÛ\ÜÏHš[œˆ]KZÏH‰Ü‹šßH‰Ü‹›Ë›X\
+
+ËJOO˜Ü[Ûˆ˜[YOH‰Ù\ØÊİš[™Ê˜[ÖÚWJJ_Hˆ	Ôİš[™Êİ\ŠOOOTİš[™Ê˜[ÖÚWJOÈœÙ[XİYˆˆŸO‰Ù\ØÊÊ_OÛÜ[Û˜
+Kš›Ú[ŠˆŠ_OÜÙ[Xİ˜ßBˆ[ÙHYŠ‹OOOHÙÙÛHŠXİXX™[Û\ÜÏHœİÚ]Ú[œ]\OH˜ÚXÚØ›Şˆ	ĞÑ‘ÖÜ‹š×OÈ˜ÚXÚÙYˆˆŸH]KZÏH‰Ü‹šßHÜ[ˆÛ\ÜÏHœÛÜÜ[ÛX™[˜Âˆ[ÙHYŠ‹OOOH˜ˆŠXİX]ÛˆÛ\ÜÏH˜ˆÛHˆ]KXXİH‰Ü‹˜XİH‰Ù\ØÊ‹›œÜ]
+ˆŠKœÛXÙJLJJ_H8¥­Ø]Û˜Âˆ[ÙHYŠ‹OOOHš[ŠXİ\‹š[Âˆ[ÙHYŠ‹OOOHš[™›ÈŠXİXˆİ[OH˜ÛÛÜ˜\ŠKXXØÙ[ŠNÙ›Û\Ú^™NŒLË\ÛX^]ÚYŒÍİ^X[YÛœšYÚ‰Ù\ØÊİš[™Ê‹š[™›Ê
+JJ_OØ˜Âˆ›İËš[›™\’SXX™[‰Ù\ØÊ‹›
+_IÜ‹œÏØÛX[‰Ù\ØÊ‹œÊ_OÜÛX[˜ˆˆŸOÛX™[‰ØİXÂˆ›ÙK˜\[™Ú[
+›İÊNÂˆJNÂˆËÈš[™[™ÜÂˆ		
+ˆØYZ[›ÙHÙ]KZ×HŠK™›Ü‘XXÚ
+[OÂˆÛÛœİÏY[™]\Ù]šÎÚYŠZÊ\™]\›ÂˆÛÛœİ]Y[\OOOHœ˜[™ÙHŸ[\OOOH˜ÛÛÜˆŸ[YÓ˜[YOOOH”ÑSPÕÈš[œ]Š[\OOOH˜ÚXÚØ›ŞÈ˜Ú[™ÙHˆ˜Ú[™ÙHŠNÂˆ[˜Y]™[\İ[™\Š]‹
+
+OOÂˆ]ÂˆYŠ[\OOOH˜ÚXÚØ›ŞŠ]Y[˜ÚXÚÙYÂˆ[ÙHYŠ[\OOOHœ˜[™ÙHŠ^İ\\œÙQ›Ø]
+[˜[YJNØÛÛœİÜY[›™^[[Y[ÚX›[™ÎÚYŠÜ	‰œÜ˜Û\ÜÓ\İ˜ÛÛZ[œÊ›]]YŠJ\Ü^ÛÛ[]ŸBˆ[ÙHYŠ[\OOOH›[X™\ˆŠ]XÛ[\
+\œÙQ›Ø]
+[˜[YJ_\œÙQ›Ø]
+[›Z[Š_\œÙQ›Ø]
+[›X^
+_NNNJNÂˆ[ÙHYŠÏOOH[™HŠ]\\œÙR[
+[˜[YJNÂˆ[ÙHY[˜[YNÂˆÑ‘ÖÚ×O]ÜØ]™PÙ™Ê
+Nİ\ËœÚYQ
+ÊNÂˆJNÂˆYŠ[\OOOHœ˜[™ÙHŠY[˜Y]™[\İ[™\Š˜Ú[™ÙH‹
+
+OOÚYŠÏOOH™[œÚ]HŸÏOOHœÜYYŠP‘Ë˜Z[
+
+_JNÂˆJNÂˆ		
+ˆØYZ[›ÙHÙ]KXXİHŠK™›Ü‘XXÚ
+O˜‹›Û˜ÛXÚÏJ
+OOĞPÕSÓ”ÖØ‹™]\Ù]˜XİI‰PÕSÓ”ÖØ‹™]\Ù]˜XİJ
+_JNÂˆ	
+ˆÚ[˜Õ[YHŠI‰Š	
+ˆÚ[˜Õ[YHŠK˜ÚXÚÙY]YJNÂˆÛÛœİÛÏI
+ˆÜÚ\™Sİ]ŠNÚYŠÛÊ^ÜÛË˜[YOTÚ\™K›\İ‘Ù[™\˜]H
+ÈÛÜHX˜[È8 %[šÈXZ[ˆX^YYØH<'ä£ÜÛËœÙ]]šX]Jœ™XYÛ›H‹ˆŠ_BˆYŠXœÖÔ‹X—OOOH¼'å%ÈÚ\™HŠTÙ\™\TKœ™[™\“[šÜÊ
+NÂˆYÙÜË\]P˜YÙJ
+NÂˆBŸNÂ‚‹ÊˆOOOOOOOOOOOOOOOOHÓÓÑÓHÒQÓ‹RSˆOOOOOOOOOOOOOOOOH
+‹Â˜ÛÛœİÔÏ^Âˆ\Ù\›[ÛØY[™Î™˜[ÙKˆ[İ[
+
+^ÂˆÛÛœİÜ˜\I
+ˆÙØ•Ü˜\ŠNÚYŠ]Ü˜\
+\™]\›ÂˆYŠ\Ë\Ù\Š^İÜ˜\š[›™\’SXÜ[ˆÛ\ÜÏH˜K]\Ù\ˆ¸§!H	Ù\ØÊ\Ë\Ù\‹›˜[Y_\Ë\Ù\‹™[XZ[
+_H
+ÛÛÙÛJOÜÜ[˜Ü™]\›ŸBˆYŠPÑ‘Ë™ĞÛY[Y
+^ÂˆÜ˜\š[›™\’SXÛ\ÜÏH›]]Yˆİ[OH™›Û\Ú^™NŒL‹\ÛX^]ÚYŒÌ¼'å$HÛÛÙÛHÛY[QÙ]˜ZHZH8 %Ü[ˆÛ\ÜÏH›[šÚ\ÚˆÛ˜ÛXÚÏHPÕSÓ”Ë™ÔÙ]\
+
+HœÙ]\İZYHÚÛÈ
+ˆZ[ŠOÜÜ[ˆXH\ÜİÛÜ™ÙHÙÚ[ˆØ\›ÏÜ˜Âˆ™]\›ÂˆBˆYŠÚ[™İË™ÛÛÙÛI‰Ú[™İË™ÛÛÙÛK˜XØÛİ[É‰Ú[™İË™ÛÛÙÛK˜XØÛİ[ËšY
+^İ\Ëœ™[™\Š
+NÜ™]\›ŸBˆÜ˜\š[›™\’SXÛ\ÜÏH›]]Yˆİ[OH™›Û\Ú^™NŒL‹\¸£ìÈÛÛÙÛHØYÈ˜ZK‹‹Ü˜ÂˆYŠ\Ë—ÛØY[™Ê\™]\›İ\Ë—ÛØY[™Ï]YNÂˆÛÛœİÏYØİ[Y[˜Ü™X]Q[[Y[
+œØÜš\ŠNÂˆËœÜ˜ÏHšÎ‹ËØXØÛİ[Ë™ÛÛÙÛK˜ÛÛKÙÜÚKØÛY[ÜË˜\Ş[˜Ï]YNÜË™Y™\]YNÂˆË›Û›ØYJ
+OOİ\Ë—ÛØY[™ÏY˜[ÙNİ\Ëœ™[™\Š
+_NÂˆË›Û™\œ›ÜJ
+OOİ\Ë—ÛØY[™ÏY˜[ÙNÂˆÜ˜\š[›™\’SXÛ\ÜÏH›]]Yˆİ[OH™›Û\Ú^™NŒL‹\ÛX^]ÚYŒÌŒ¸¦¨;î#ÈÛÛÙÛHØÜš\XZ[ˆØY˜ZHXH
+™]šY]ÈØ[™›ŞÛÙ™›[™JKˆ‘\ŞYY[šÈHYH]Ûˆ\˜[ØX[HØ\™YØKØˆš[[\ÜİÛÜ™XH\İÙÚ[ˆ\ÙHØ\›ËÜÜ[ˆÛ\ÜÏH›[šÚ\ÚˆÛ˜ÛXÚÏH‘ÔËœÚ[][]J
+H¼'éêˆ™]šY]È\İÙÚ[ÜÜ[˜ÂˆNÂˆØİ[Y[šXY˜\[™Ú[
+ÊNÂˆKˆ™[™\Š
+^ÂˆÛÛœİÜ˜\I
+ˆÙØ•Ü˜\ŠNÚYŠ]Ü˜\]Ú[™İË™ÛÛÙÛ_]Ú[™İË™ÛÛÙÛK˜XØÛİ[Ê\™]\›Âˆ^ÂˆÛÛÙÛK˜XØÛİ[ËšYš[š]X[^™JØÛY[ÚYÑ‘Ë™ĞÛY[YØ[˜XÚÎœO‘ÔË›ÛÜ™Y
+Š_JNÂˆÜ˜\š[›™\’SHˆÂˆÛÛÙÛK˜XØÛİ[ËšYœ™[™\]ÛŠÜ˜\İ[YNˆ™š[YØ›XÚÈ‹Ú^™Nˆ›\™ÙH‹Ú\Nˆœ[‹^ˆ˜ÛÛ[YWİÚ]‹ØØ[Nˆ™[ˆ‹ÚYŒJNÂˆXØ]Ú
+J^İÜ˜\š[›™\’SIÏÛ\ÜÏH›]]Yˆİ[OH™›Û\Ú^™NŒL‹\¸¦¨;î#ÈÛÛÙÛH]Ûˆ\œ›Üˆ	ÊÙ\ØÊK›Y\ÜØYÙJJÉÏÜ‰ßBˆKˆØ]™RY
+
+^ÂˆÛÛœİJ	
+ˆÙØÚY[ˆŠOË˜[Y_ˆŠKš[J
+NÂˆYŠ]Š^ÕØ\İœÚİÊ¸§cÛY[QÚX[HZHŠNÜ™]\›ŸBˆÑ‘Ë™ĞÛY[Y]ÜØ]™PÙ™Ê
+NÓ[Ù[˜ÛÜÙJ™Ù[“[Ù[ŠNÂˆØ\İœÚİÊ¸§!HÛÛÙÛHÛY[QØ]™YHXˆ”ÚYÛˆ[ˆÚ]ÛÛÙÛOØˆ]ÛˆXİ]™HZHŠNÂˆ\Ë—ÛØY[™ÏY˜[ÙNİ\Ë›[İ[
+
+NÂˆKˆÚ[][]J
+^İ\Ë™Ü˜[
+Ù[XZ[QRS—ÑSPRS˜[YNˆ“İÛ™\ˆ‹Xİ\™N›[Ú[NY_J_Kˆ
+
+^Ü\œ™\XÙJËKÙËŠÈŠKœ™\XÙJ×ËÙË‹ÈŠNİÚ[J›[™İ	M
+\
+ÏHHÂˆ™]\›ˆXÛÙUT’PÛÛ\Û™[
+]ØŠ
+KœÜ]
+ˆŠK›X\
+ÚOˆ‰HŠÊŒŠØÚ˜Ú\ÛÙP]
+
+KÔİš[™ÊMŠJKœÛXÙJLŠJKš›Ú[ŠˆŠJ_Kˆ\Ş[˜ÈÛÜ™Y
+™\Ü
+^ÂˆËÈŒLNˆYZ[ˆÙÚ[ˆØÜ™Y[ˆ\ˆ˜ZHZ[ÈÚYHÜ™Y[X[“Ô“PSTÑTˆÚYÛ‹Z[ˆZH8 %›İ]HØ\›ÂˆÛÛœİYZ[›ŞI
+ˆØYZ[“ÙÚ[ˆŠNÂˆÛÛœİÛYZ[”ØÜ™Y[HHJØİ[Y[œ]Y\TÙ[XİÜŠˆÜËXYZ[‹˜Xİ]™HŠI‰˜YZ[›Ş	‰˜YZ[›Şœİ[K™\Ü^HOOH››Û™HŠNÂˆYŠ[ÛYZ[”ØÜ™Y[‰‰\[Ùˆ\Ù\]]OOH[™Yš[™YŠ\™]\›ˆ\Ù\]]›ÛÜ™Y
+™\Ü
+NÂˆËÈÑPˆTSÑNˆÙ\™\ˆ™\šYšY\ÈHÛÛÙÛHÚÙ[ˆ›Ü\›BˆYŠÔ•‹›[ÙOOOHœÙ\™\ˆŠ^Âˆ^ÂˆÛÛœİX]ØZ]Ù\™\TK™ÛÙÚ[Š™\Ü˜Ü™Y[X[
+NÂˆYŠ‹›ÚÊ^ÂˆÔ•‹ÚÙ[Z‹ÚÙ[ÓËœÙ]
+˜YZ[•ÚÙ[ˆ‹‹ÚÙ[ŠNÂˆ\Ë\Ù\Z‹\Ù\ÓËœÙ]
+™Õ\Ù\ˆ‹‹\Ù\ŠNÂˆ	
+ˆØYZ[“ÙÚ[ˆŠKœİ[K™\Ü^OH››Û™HÂˆYZ[‹œ™[™\Š
+NĞ]Y[ÔŞ\ËœÙ
+™ÛÛÙŠNÑ˜ÛÛ™™]JŒ
+NÂˆØ\İœÚİÊ¸§!HÛÛÙÛHÚYÛ‹Z[ˆİXØÙ\ÜÈOœ•Ù[ÛÛYHˆŠÙ\ØÊ‹\Ù\‹›˜[Y_‹\Ù\‹™[XZ[
+JÈØˆ<'ädHŠNÜ™]\›ÂˆBˆØ\İœÚİÊ¸§cŠÊ‹›\Ùß‘ÛÛÙÛHÙÚ[ˆ˜Z[ŠJNĞ]Y[ÔŞ\ËœÙ
+››ÜHŠNÜ™]\›ÂˆXØ]Ú
+J^ËÊˆÙ™›[™H8 %˜[˜XÚÈ™[İÈ
+‹ßBˆBˆ^ÂˆÛÛœİOR”ÓÓ‹œ\œÙJ\Ë˜
+™\Ü˜Ü™Y[X[œÜ]
+‹ˆŠVÌWJJNÂˆ\Ë™Ü˜[
+Ù[XZ[ŠK™[XZ[ˆŠKÓİÙ\Ø\ÙJ
+K˜[YNK›˜[Y_K™[XZ[Xİ\™NKœXİ\™_[JNÂˆXØ]Ú
+J^ÕØ\İœÚİÊ¸§cÛÛÙÛH™\ÜÛœÙH\œÙH˜ZHXH8 %Ø˜\˜HHØ\›ÈŠ_BˆKˆÜ˜[
+J^ÂˆYŠ
+K™[XZ[ˆŠKÓİÙ\Ø\ÙJ
+HOOPQRS—ÑSPRS
+^ÂˆØ\İœÚİÊ¸§cYHÛÛÙÛHXØÛİ[İÛ™\ˆØH˜ZHZOœ”Ú\™ˆˆŠĞQRS—ÑSPRS
+ÈØˆ[İÙYZH<'æ#ˆŠNÂˆ]Y[ÔŞ\ËœÙ
+››ÜHŠNÜ™]\›ÂˆBˆ\Ë\Ù\]NÓËœÙ]
+™Õ\Ù\ˆ‹JNÓËœÙ]
+˜YZ[“ÚÈ‹YJNÔË˜YZ[“ÚÓÛ˜ÙO]YNÜØ]™Tİ]Ê
+NÂˆÛÛœİI
+ˆØYZ[“ÙÚ[ˆŠNÚYŠŠ[‹œİ[K™\Ü^OH››Û™HÂˆYZ[‹œ™[™\Š
+NĞ]Y[ÔŞ\ËœÙ
+™ÛÛÙŠNÑ˜ÛÛ™™]JŒ
+NÂˆØ\İœÚİÊ¸§!HYZ[ˆÚYÛ‹Z[ˆİXØÙ\ÜÈOœ•Ù[ÛÛYHˆŠÙ\ØÊK›˜[Y_K™[XZ[
+JJÈØˆ<'ädHŠNÂˆBŸNÂ
