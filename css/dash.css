@@ -1,0 +1,64 @@
+/* dash.css */
+.dash-wrap {
+  padding-top: 48px;
+  padding-bottom: 90px;
+  position: relative;
+  z-index: 1;
+}
+.dash-wrap h1 { font-size: 30px; margin-bottom: 6px; }
+.dash-sub { color: var(--cream-faint); font-size: 14px; margin: 0 0 26px; }
+
+.dash-tools {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 26px;
+  flex-wrap: wrap;
+}
+.restore-label { display: inline-flex; align-items: center; cursor: pointer; }
+
+.prop-list { display: flex; flex-direction: column; gap: 16px; }
+.prop-card {
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: 22px 24px;
+}
+.prop-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.prop-head h3 { font-size: 21px; }
+.prop-date { font-size: 12.5px; color: var(--cream-faint); }
+
+.stats-row { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 14px; }
+.stat { display: flex; flex-direction: column; }
+.stat b { font-family: var(--font-head); font-size: 22px; font-weight: 700; color: var(--cream); }
+.stat span { font-size: 12px; color: var(--cream-faint); letter-spacing: 0.04em; }
+.stat.yes b { color: #7fc98f; }
+
+.reply-box {
+  background: var(--ink);
+  border-left: 3px solid var(--accent);
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 14px;
+}
+.reply-box .who { font-size: 12px; color: var(--cream-faint); margin-bottom: 4px; }
+.reply-box p { margin: 0; font-size: 15px; color: var(--cream); white-space: pre-wrap; word-break: break-word; }
+
+.prop-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.prop-link-code { font-size: 12.5px; color: var(--cream-faint); margin-right: auto; word-break: break-all; }
+.prop-link-code code { color: var(--cream-dim); }
+
+.empty { color: var(--cream-dim); }
+.dash-loading { color: var(--cream-faint); }
+.hidden { display: none !important; }
+
+.wiz-grid2x { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.wiz-btnsx { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
+
+@media (max-width: 600px) { .wiz-grid2x { grid-template-columns: 1fr; } }

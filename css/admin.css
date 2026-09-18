@@ -1,0 +1,30 @@
+/* admin.css */
+.admin-wrap { padding-top: 48px; padding-bottom: 90px; }
+.admin-wrap h1 { font-size: 30px; margin-bottom: 6px; }
+.admin-sub { color: var(--cream-faint); font-size: 14px; margin: 0 0 30px; }
+
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-card);
+  padding: 18px 20px;
+}
+.stat-card:nth-child(2n) { padding-top: 22px; } /* thoda haath ka asar */
+.stat-card b {
+  display: block;
+  font-family: var(--font-head);
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--cream);
+}
+.stat-card span { font-size: 12px; color: var(--cream-faint); letter-spacing: 0.05em; }
+
+.chart-card h2 { font-size: 19px; margin-bottom: 2px; }
+.chart-sub { color: var(--cream-faint); font-size: 13px; margin: 0 0 16px; }
+#chart { width: 100%; display: block; }
