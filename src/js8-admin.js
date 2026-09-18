@@ -247,7 +247,7 @@ const ACTIONS={
       <div style="font-size:48px">🔐</div><h3>Google Sign-In Setup (2 min)</h3>
       <div style="text-align:left;font-size:13.5px;line-height:1.9;color:#ffd9e2">
       1️⃣ <b>console.cloud.google.com</b> kholo → project banao<br>
-      2️⃣ <b>APIs & Services → Credentials → Create Credentials → OAuth client ID</b><br>
+      2️⃣ <b>APIs \u0026amp; Services → Credentials → Create Credentials → OAuth client ID</b><br>
       3️⃣ Application type: <b>Web application</b><br>
       4️⃣ <b>Authorized JavaScript origins</b> mein apni site ka URL daalo<br>
       &nbsp;&nbsp;&nbsp;(jaise <code>https://your-site.netlify.app</code>)<br>
@@ -369,13 +369,13 @@ const Admin={
     if(k==="glow")document.body.classList.toggle("noglow",!CFG.glow);
     if(k==="vol")AudioSys.setVol();
     if(k==="introTitle"){$("#typed").textContent=CFG.introTitle}
-    if(k==="introSub")$("#introSub").textContent=CFG.introSub;
+    if(k=="introSub")$("#introSub").textContent=CFG.introSub;
     if(k==="herName"){$("#tbHer").textContent=CFG.herName==="Meri Jaan"?"You":CFG.herName}
-    if(k==="music"){CFG.music?AudioSys.startMusic():AudioSys.stopMusic()}
-    if(k==="musicSource"){AudioSys.stopMusic();if(CFG.music)AudioSys.startMusic()}
-    if(k==="d3"&&!CFG.d3){$$(".tilt3d").forEach(el=>{el.style.setProperty("--rx","0deg");el.style.setProperty("--ry","0deg")});const a=$("#app");if(a)a.style.transform=""}
-    if(k==="d3"||k==="bg3d"){try{if(typeof BG3D!=="undefined"){if(BG3D.enabled()&&CFG.d3){BG3D.resume();if(BG.theme)BG3D.sync(BG.theme)}else BG3D.halt()}}catch(e){}}
-    if(k==="showEggCounter"){$("#konamiHint").style.display=CFG.showEggCounter?"block":"none"}
+    if(k=="music"){CFG.music?AudioSys.startMusic():AudioSys.stopMusic()}
+    if(k=="musicSource"){AudioSys.stopMusic();if(CFG.music)AudioSys.startMusic()}
+    if(k=="d3"&&!CFG.d3){$$(".tilt3d").forEach(el=>{el.style.setProperty("--rx","0deg");el.style.setProperty("--ry","0deg")});const a=$("#app");if(a)a.style.transform=""}
+    if(k=="d3"||k=="bg3d"){try{if(typeof BG3D!=="undefined"){if(BG3D.enabled()&&CFG.d3){BG3D.resume();if(BG.theme)BG3D.sync(BG.theme)}else BG3D.halt()}}catch(e){}}
+    if(k=="showEggCounter"){$("#konamiHint").style.display=CFG.showEggCounter?"block":"none"}
     if(k&&k.startsWith("quiz"))this.parseQuiz();
     Eggs.updateBadge();
   },
@@ -425,13 +425,13 @@ const Admin={
       el.addEventListener(ev,()=>{
         let v;
         if(el.type==="checkbox")v=el.checked;
-        else if(el.type==="range"){v=parseFloat(el.value);const sp=el.nextElementSibling;if(sp&&sp.classList.contains("muted"))sp.textContent=v}
-        else if(el.type==="number")v=clamp(parseFloat(el.value)||0,parseFloat(el.min)||0,parseFloat(el.max)||9999);
+        else if(el.type=="range"){v=parseFloat(el.value);const sp=el.nextElementSibling;if(sp&&sp.classList.contains("muted"))sp.textContent=v}
+        else if(el.type=="number")v=clamp(parseFloat(el.value)||0,parseFloat(el.min)||0,parseFloat(el.max)||9999);
         else if(k==="tune")v=parseInt(el.value);
         else v=el.value;
         CFG[k]=v;saveCfg();this.sideFx(k);
       });
-      if(el.type==="range")el.addEventListener("change",()=>{if(k==="density"||k==="speed")BG.build()});
+      if(el.type==="range")el.addEventListener("change",()=>{if(k==="density"||k=="speed")BG.build()});
     });
     $$("#adminBody [data-act]").forEach(b=>b.onclick=()=>{ACTIONS[b.dataset.act]&&ACTIONS[b.dataset.act]()});
     $("#incTheme")&&($("#incTheme").checked=true);
