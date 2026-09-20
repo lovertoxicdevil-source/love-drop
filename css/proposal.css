@@ -1,4 +1,4 @@
-/* proposal.css — viewer ka page. Sab kuch center, ek wapt mein ek chuej. */
+/* proposal.css — viewer ka page. Sab kuch center, ek waqt mein ek cheez. */
 
 #bg, #fx {
   position: fixed;
@@ -25,7 +25,8 @@
 .screen {
   width: 100%;
   max-width: 640px;
-  text-align: center;  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  text-align: center;
+  animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 .screen.hidden { display: none !important; }
 
@@ -39,7 +40,7 @@
   position: fixed;
   right: 14px;
   bottom: 14px;
-  z-index: 300;
+  z-index: 30;
   display: flex;
   gap: 8px;
 }
