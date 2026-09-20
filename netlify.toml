@@ -1,0 +1,17 @@
+# Love Drop — Netlify config
+# Static site; API Supabase Edge Function pe hai (absolute URL se jaati hai, proxy ki zaroorat nahi)
+
+[build]
+  publish = "."
+
+# proposal pages: ek hi page, code URL se uthata hai
+[[redirects]]
+  from = "/p/*"
+  to = "/proposal.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"

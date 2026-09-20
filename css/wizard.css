@@ -44,8 +44,7 @@
   max-height: 240px;
   border-radius: 12px;
   margin: 0 auto 10px;
-  display: block;
-  object-fit: cover;
+  display: block;  object-fit: cover;
 }
 .photo-hint { color: var(--cream-faint); font-size: 13.5px; margin: 0; }
 
@@ -147,8 +146,7 @@
 .link-box code {
   flex: 1;
   font-size: 14.5px;
-  color: var(--cream);
-  word-break: break-all;
+  color: var(--cream);  word-break: break-all;
   min-width: 180px;
 }
 .lbl-inline { font-size: 12.5px; color: var(--cream-faint); width: 100%; }
