@@ -4,21 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Apna proposal banao — Love Drop</title>
-  <link rel="icon" type="image/svg+xml" href="/love-drop/favicon.svg">
-  <link rel="stylesheet" href="/love-drop/css/base.css">
-  <link rel="stylesheet" href="/love-drop/css/wizard.css">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/base.css">
+  <link rel="stylesheet" href="/css/wizard.css">
 </head>
 <body class="grain">
   <div class="progress" id="wiz-progress"></div>
 
   <header class="topbar">
-    <a class="brand" href="/love-drop/">
+    <a class="brand" href="/">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
         <path d="M12 21s-7.5-4.6-9.8-9.1C.6 8.6 2.3 5 5.7 5c2 0 3.3 1.1 4.3 2.4C11 6.1 12.3 5 14.3 5c3.4 0 5.1 3.6 3.5 6.9C15.5 16.4 12 21 12 21z" fill="#e4573d" opacity="0.9"/>
       </svg>
       Love Drop
     </a>
-    <nav><a class="btn btn-quiet" href="/love-drop/dashboard" id="nav-dash">Dashboard</a></nav>
+    <nav><a class="btn btn-quiet" href="/dashboard" id="nav-dash">Dashboard</a></nav>
   </header>
 
   <main class="wrap wiz-wrap">
@@ -28,7 +28,7 @@
       <h1>Kiske liye bana rahe ho?</h1>
       <p class="wiz-sub">Naam hi woh cheez hai jo poore page ko zinda kar degi.</p>
       <label class="field">
-        <span class="lbl">Uska naam (jo link kholaga)</span>
+        <span class="lbl">Uska naam (jo link holaga)</span>
         <input type="text" id="partner_name" maxlength="40" placeholder="jaise: Ananya">
       </label>
       <label class="field">
@@ -65,17 +65,17 @@
       <label class="field">
         <span class="lbl">Background tune</span>
         <div class="tune-row" id="tune-row"></div>
-        <span class="hint">Teen synth tunes, page pe khud hi bajte hain. Koi file nahi chahiye.</span>
+        <span class="hint">Teen senta tunes, page pe khud hi bajte hain. Koi file nahi chahiye.</span>
       </label>
 
       <label class="field">
         <span class="lbl">Tumhara note (YES ke baad dikhega)</span>
-        <textarea id="note" maxlength="2000" placeholder="Jo bhi dil mein hai, likh do..."></textarea>
+        <textarea id="note" maxlength="2000" placeholder="Jo bhi dim mein hai, likh do..."></textarea>
         <div class="note-tools">
-          <input type="text" id="keywords" maxlength="120" placeholder="3-4 lafz: jaise uski smile, pahad trip, raat ki chai">
+          <input type="text" id="keywords" maxlength="120" placeholder="3-4 lafz: jaise uski smile, paada trip, raat ki chha">
           <button class="btn btn-ghost btn-sm" id="draft-btn" type="button">Help me write</button>
         </div>
-        <span class="hint">Lafz likho, hum ek kachcha draft bana denge. Phir apne haath se theek karo.</span>
+        <span class="hint">Lafz likho, hum ek kaccha draft bane denge. Phir apne haata se theek karo.</span>
       </label>
 
       <label class="field">
@@ -85,7 +85,7 @@
           <input type="text" id="reason-input" maxlength="200" placeholder="ek wajah likho">
           <button class="btn btn-ghost btn-sm" id="reason-add" type="button">Add karo</button>
         </div>
-        <span class="hint">Ek-ek karke khulengi. 4 se 6 perfect hain, zyada bhi chalenge.</span>
+        <span class="hint">Ek-ek kark khulengi. 4 se 6 perfect hain, zyada bhi chalenge.</span>
       </label>
 
       <div class="wiz-btns">
@@ -164,7 +164,7 @@
       </div>
       <p class="wiz-note">Ye code tumhare dashboard mein bhi pada hai. Gum ho gaya toh wahan se utha lena.</p>
       <div class="wiz-btns">
-        <a class="btn btn-ghost" href="/love-drop/dashboard">Dashboard</a>
+        <a class="btn btn-ghost" href="/dashboard">Dashboard</a>
         <a class="btn btn-primary" id="open-link" target="_blank" rel="noopener">Link kholo</a>
       </div>
     </section>
@@ -173,9 +173,9 @@
     <p class="wiz-loading hidden" id="wiz-submitting">Bana rahe hain...</p>
   </main>
 
-  <script src="/love-drop/js/ui.js"></script>
-  <script src="/love-drop/js/audio.js"></script>
-  <script src="/love-drop/js/presets.js"></script>
-  <script src="/love-drop/js/wizard.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/audio.js"></script>
+  <script src="/js/presets.js"></script>
+  <script src="/js/wizard.js"></script>
 </body>
 </html>
